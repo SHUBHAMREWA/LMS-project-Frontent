@@ -24,9 +24,11 @@ const App = ()=>{
            
           let user = await getCurrentUser() ;
           
-           dispatch(setUser({user})) ;
-
-          
+          if(!user){
+             dispatch(setUser(null)) ;
+              return ;
+          }
+                dispatch(setUser(user)) ;          
        }
 
        userInfo() ;

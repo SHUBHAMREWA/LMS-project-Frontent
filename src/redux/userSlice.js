@@ -5,7 +5,8 @@ import { createSlice } from "@reduxjs/toolkit"
 const userSlice  = createSlice({
            name : "user" , 
            initialState : {
-            userData : null
+            userData : null , 
+            loading : true 
            } , 
            reducers : {
                    setUser : (state , action) =>{  

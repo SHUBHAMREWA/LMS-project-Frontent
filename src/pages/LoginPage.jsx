@@ -1,6 +1,6 @@
 
 import React, { use } from 'react'
-import Logo from "../../public/logo.jpg" 
+import Logo from "/logo.jpg"
 import GoogeLogo from "../assets/google.jpg"
 import { Link } from 'react-router-dom'
 import { baseUrl } from '../App'
@@ -11,7 +11,9 @@ import ScaleLoader from "react-spinners/ScaleLoader";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { setUser } from '../redux/userSlice' ;
+import { useDispatch } from 'react-redux' ; 
+import { getCurrentUser } from '../customHooks/getCurrentUser'
     
 
 
@@ -21,6 +23,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const LoginPage = () => {  
      
      const navigate = useNavigate() ;
+     const dispatch  = useDispatch() ;
        
      const [email ,setEmail] = useState("") ; 
      const [password ,setPassword] = useState("") ;  
@@ -42,7 +45,12 @@ const LoginPage = () => {
                 position: "bottom-left",
                 autoClose: 2000,
                 theme: "dark",
-                });
+                });  
+
+                let getUser = await getCurrentUser()
+                
+                 dispatch(setUser(getUser))
+
              navigate("/home")
 
         }

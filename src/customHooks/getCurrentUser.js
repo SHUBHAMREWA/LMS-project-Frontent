@@ -8,7 +8,7 @@ export const getCurrentUser = async () => {
          let response = await axios.get(`${baseUrl}/user/getuser`, {
             withCredentials: true
         }) 
-        // console.log(response.data.userData)
+        console.log(  "this is get current user form Costom hook 📰⛈️⛈️⛈️ " , response.data.userData)
         return response.data.userData;
 
     }

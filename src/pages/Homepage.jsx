@@ -1,6 +1,7 @@
 
 import React from 'react'
 import { useDispatch , useSelector } from 'react-redux'  ;
+import Nav from '../component/Nav';
 
 
 const Homepage = () => {  
@@ -10,9 +11,12 @@ const Homepage = () => {
 
 
   return (
-    <div> 
-       {JSON.stringify(user)}
-    </div>
+         <div className='w-[100%] overflow-hidden'>
+        <div className=' w-[100%] relative  lg:h-[140vh] h-[70vh] transition-all duration-500 ' >
+           <Nav/>
+        </div>
+        </div>
+   
   )
 }
 
