@@ -122,7 +122,9 @@ const LoginPage = () => {
                             className=' w-[100%] md:w-[80%] bg-black hover:cursor-pointer text-white rounded py-3 '> 
                                 { loading ? <ClipLoader size={22} color="#ffffff" /> : "Login"}
                            </button>
-                            <button className=' w-[100%] md:w-[80%] hover:cursor-pointer bg-gray-50  text-gray-700 rounded'> Forgot Password</button>
+                            <button 
+                            onClick= {()=>navigate("/forgot-password")}
+                             className=' w-[100%] md:w-[80%] hover:cursor-pointer bg-gray-50  text-gray-700 rounded'> Forgot Password</button>
 
                             <div className='w-[100%] md:w-[80%]  flex  justify-around items-center '>
                                  <div className='w-[30%] h-0.5 bg-gray-300'></div>
