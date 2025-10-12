@@ -13,6 +13,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { setUser } from '../redux/userSlice'; 
 import { useDispatch } from 'react-redux';
 import { getCurrentUser } from '../customHooks/getCurrentUser';
+import { auth , googleProvider } from '../../utils/firebase' 
+import { signInWithPopup } from 'firebase/auth' ;
 
 
 
@@ -99,6 +101,60 @@ const SignupPage = () => {
     }
 
 
+    // google sign in
+     const signInWithGoogle = async()=>{  
+            
+      setLoading(true);
+
+              try {  
+                  
+                  let response = await signInWithPopup(auth , googleProvider) ;
+   
+                  // console.log( "this is user info from google login " ,response) ;  
+                     let user = response.user ; 
+                     let name = user.displayName ;
+                     let email = user.email ; 
+                     let photoUrl = user.photoURL ; 
+
+                     let res = await axios.post( baseUrl + "/api/user/google-auth" , 
+                       {name , email , photoUrl , role }
+                         , {withCredentials : true}) ; 
+
+                     console.log("this is response from backend after google login " , res) ;  
+
+                      let getUser = await getCurrentUser() ;
+
+                       dispatch(setUser(getUser)) ;
+                      
+                   navigate("/home") ;
+ 
+
+                  setLoading(false)  ;
+
+                  toast.success("Login Successfully", { 
+                    position: "top-center",
+                    autoClose: 2000,
+                    theme: "dark",
+                                    }   )
+                
+              } catch (error) {    
+        
+                  setLoading(false)  ;
+
+                  toast.error(error.message, {
+                    position : "top-center" ,
+                    autoClose : 2000  , 
+                    theme : "dark"
+                  })
+
+                console.log(error)
+                
+              }
+
+     }
+
+
+
     return ( 
 
         <div className='w-[100%] h-[100vh] flex justify-center items-center bg-[#dddadb]'>
@@ -109,7 +165,7 @@ const SignupPage = () => {
                 className='bg-white w-[80%] md:w-[70%] h-170  flex justify-center items-center shadow-x rounded-2xl' >
 
                 {/* ▒▒▒▒▒▒▒ Left side ▒▒▒▒▒ */}
-                <div className='p-2 w-[80%] md:w-[50%] flex justify-center items-center flex-col gap-3 '>
+                <div className='p-2 w-[80%] md:w-[50%] transition-all duration-700 flex justify-center items-center flex-col gap-3 '>
 
                     <div className='flex flex-col justify-center items-center gap-2'>
                         <h1 className='text-3xl font-bold'>Let's get started</h1>
@@ -195,6 +251,7 @@ const SignupPage = () => {
                     </div>
 
                     <button 
+                    onClick={signInWithGoogle}
                     disabled={loading}
                      className=' w-[100%] md:w-[80%] border-2 border-y-gray-300 border-x-gray-400 hover:cursor-pointer flex 
                        justify-center items-centertext-white rounded py-3 '>
