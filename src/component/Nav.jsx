@@ -84,7 +84,7 @@ const Nav = () => {
 
        <div className='lg:flex items-center gap-3 transition-all lg:pr-12 pr-2 hidden'>
               <span 
-               onClick={()=> setShow((prev)=> !prev)} className=' hover:bg-gray-200 cursor-pointer text-2xl py-1 px-3 rounded border-2 border-white'>
+               onClick={()=> setShow((prev)=> !prev)} className=' bg-gray-200 cursor-pointer text-2xl py-1 px-3 rounded border-2 border-white'>
        { userData?.name ? userData.name[0].toUpperCase() :  <IoPersonSharp/>}
         </span>
 
@@ -112,7 +112,7 @@ const Nav = () => {
 }
          
          { show &&  <div  
-           className=' absolute flex flex-col gap-3 p-2 border-2 border-black
+           className=' absolute flex bg-white flex-col gap-3 p-2 border-2 border-black
             text-white justify-center top-[130%] rounded-xl '
            > 
             <button  

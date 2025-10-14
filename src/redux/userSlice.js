@@ -5,12 +5,16 @@ import { createSlice } from "@reduxjs/toolkit"
 const userSlice  = createSlice({
            name : "user" , 
            initialState : {
-            userData : null , 
-            loading : true 
+            userData : JSON.parse(localStorage.getItem("userData")) || null,
            } , 
            reducers : {
                    setUser : (state , action) =>{  
-                        state.userData = action.payload ;
+                         state.userData = action.payload;
+                           if (action.payload) {
+                                        localStorage.setItem("userData", JSON.stringify(action.payload));
+                             } else {
+                                        localStorage.removeItem("userData");
+                           }
                    }
            }
 })

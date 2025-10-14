@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./redux/userSlice.js"
 import Profile from "./pages/Profile.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
+import EditProfile from "./pages/EditProfile.jsx";
 
 
  export const baseUrl  = "http://localhost:5001"
@@ -48,7 +49,10 @@ const App = ()=>{
             <Route path="/login"  element={<LoginPage/>}/>
             <Route  path="/signup" element={!userData ? <SignupPage/> : <Navigate to="/home" />} />
             <Route  path="/profile" element={userData ?<Profile/> : <Navigate to="/signup"/>} />
-            <Route path="/forgot-password"  element={<ForgotPassword/>}/>"
+            <Route path="/forgot-password"  element={<ForgotPassword/>}/>
+            <Route  path="/edit-profile" element={userData ?<EditProfile/> : <Navigate to="/signup"/>} />
+            
+            
 
 
           </Routes>
