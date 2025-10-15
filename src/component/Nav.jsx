@@ -21,7 +21,8 @@ const Nav = () => {
     const dispatch = useDispatch() ;
 
     const [show , setShow]  = useState(false) ;
-    const [showHemp , setShowHemp]  = useState(false)
+    const [showHemp , setShowHemp]  = useState(false) ;
+    const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(()=>{  
                   
@@ -61,14 +62,31 @@ const Nav = () => {
       }
       
 
-    }
+    }  
+
+  
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
 
 
 
   return (
 
-    <nav className='fixed z-10 top-0 w-full h-[70px] px-6 py-3 bg-[#54535355] flex justify-between items-center'>
+    <nav className={`fixed z-10 top-0 w-full h-[70px] px-6 py-3 bg-[#54535355] flex 
+     ${isScrolled ? "backdrop-blur-sm " : ""} transition-all 
+     justify-between items-center`}>
       {/* Left side - Logo */}
       <div className=' lg:w-[20%]  w-[30%] flex items-center transition-all lg:pl-12 pl-2'>
         <img src={Logo} alt="Logo" width={60} height={60} className='border-2  border-white rounded-2xl' />
@@ -82,11 +100,22 @@ const Nav = () => {
        
       { userData ?  
 
-       <div className='lg:flex items-center gap-3 transition-all lg:pr-12 pr-2 hidden'>
-              <span 
-               onClick={()=> setShow((prev)=> !prev)} className=' bg-gray-200 cursor-pointer text-2xl py-1 px-3 rounded border-2 border-white'>
-       { userData?.name ? userData.name[0].toUpperCase() :  <IoPersonSharp/>}
+       <div className='lg:flex items-center gap-3 transition-all lg:pr-12 pr-2 hidden'>  
+
+       {
+          userData?.photoUrl ?<img 
+                   onClick={()=> setShow((prev)=> !prev)}
+                      src={userData.photoUrl} 
+                      alt="Profile" 
+                      className="w-17 h-17 p-3 rounded-full object-cover"
+                    /> :   
+                           <span 
+               onClick={()=> setShow((prev)=> !prev)} className=' bg-gray-200 cursor-pointer text-2xl py-1 px-3 rounded border-2 border-white'> 
+                   
+                    { userData?.name ? userData.name[0].toUpperCase() :  <IoPersonSharp/>}
         </span>
+       }
+       
 
 
        { userData?.role == "educator" && <span className='bg-black text-white shadow  cursor-pointer  p-2  rounded-xl border-2 border-white'>
@@ -136,7 +165,7 @@ const Nav = () => {
      
       <TfiMenu 
           onClick={()=> setShowHemp((prev)=>!prev)}
-       className='lg:hidden cursor-pointer text-2xl'/>
+       className='lg:hidden cursor-pointer text-white text-2xl'/>
     
 
 

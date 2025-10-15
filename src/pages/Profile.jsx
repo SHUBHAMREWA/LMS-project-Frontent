@@ -16,7 +16,7 @@ const Profile = () => {
     <div className='w-[100vw] h-[100vh] bg-[#f2f4f5] flex justify-center items-center shadow-2xl'>  
 
       <div 
-      className='relative bg-white lg:w-[50%] h-[50] w-[70%] rounded-2xl flex justify-center items-center flex-col gap-5 p-3' >  
+      className='relative bg-white lg:w-[50%] h-[50] w-[90%] rounded-2xl flex justify-center items-center flex-col gap-5 p-3' >  
 
       <span 
       onClick={()=>navigate("/home")}

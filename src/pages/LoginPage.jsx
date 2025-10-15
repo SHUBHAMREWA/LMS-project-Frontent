@@ -39,7 +39,8 @@ const LoginPage = () => {
               {    email ,  password } ,
               {withCredentials : true}
              )
-             
+                
+             console.log( "login",response.data)
 
               setLoading(false)  
               toast.success("Login Successfully", {
@@ -55,7 +56,8 @@ const LoginPage = () => {
              navigate("/home")
 
         }
-        catch(error){
+        catch(error){   
+            console.log("error in login" , error.response.data)
               setLoading(false)
               toast.error(error.response.data.message, {
                 position: "bottom-left",

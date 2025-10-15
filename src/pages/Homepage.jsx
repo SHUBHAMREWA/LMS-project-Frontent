@@ -7,6 +7,7 @@ import ai from "../assets/ai.png"
 import ai1 from "../assets/SearchAi.png" 
 import { GiArmoredBoomerang } from "react-icons/gi";
 import LogoforHomePage from '../component/LogoforHomePage';
+import ExploreCourses from '../component/ExploreCourses';
 
 
 const Homepage = () => {  
@@ -18,7 +19,7 @@ const Homepage = () => {
   return (
          <div className='w-[100%] overflow-x-hidden'>
         <div className=' w-[100%] relative  lg:h-[150vh] h-[70vh] transition-all duration-500 ' >
-           <Nav/>
+              <Nav/>
             
             <img  className='object-cover  transition-all duration-500 w-[100%] lg:h-[100%] md:object-fill h-[50vh] '
              src={HomeImg} />
@@ -47,8 +48,13 @@ const Homepage = () => {
 
               </div>
 
-                    </div> 
+                 </div> 
+
         <LogoforHomePage/>
+
+        <ExploreCourses/>
+
+        
 
         </div>
    
