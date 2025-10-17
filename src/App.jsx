@@ -13,7 +13,7 @@ import { setUser } from "./redux/userSlice.js"
 import Profile from "./pages/Profile.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import EditProfile from "./pages/EditProfile.jsx";
-
+import AddCourse from "./pages/AddCourse.jsx";
 
  export const baseUrl  = "http://localhost:5001"
 
@@ -51,7 +51,7 @@ const App = ()=>{
             <Route  path="/profile" element={userData ?<Profile/> : <Navigate to="/signup"/>} />
             <Route path="/forgot-password"  element={<ForgotPassword/>}/>
             <Route  path="/edit-profile" element={userData ?<EditProfile/> : <Navigate to="/signup"/>} />
-            
+            <Route path="/educator/dashboard/addCourse" element={userData && userData.role === "educator" ? <AddCourse/> : <Navigate to="/home" />} />
             
 
 
