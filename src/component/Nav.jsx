@@ -118,7 +118,9 @@ const Nav = () => {
        
 
 
-       { userData?.role == "educator" && <span className='bg-black text-white shadow  cursor-pointer  p-2  rounded-xl border-2 border-white'>
+       { userData?.role == "educator" && <span 
+       onClick={()=> navigate("/educator/dashboard")}
+       className='bg-black text-white shadow  cursor-pointer  p-2  rounded-xl border-2 border-white'>
            Dashboard
         </span>
          } 
@@ -204,7 +206,9 @@ const Nav = () => {
            </div>
            } 
  
-         { userData?.role == "educator" && <span className='bg-black text-white  border-2 px-12 border-white hover:bg-[#54535355] transition-colors  py-6 rounded-2xl'>
+         { userData?.role == "educator" && <span 
+          onClick={()=> navigate("/educator/dashboard")}
+          className='bg-black text-white  border-2 px-12 border-white hover:bg-[#54535355] transition-colors  py-6 rounded-2xl'>
            Dashboard
         </span>
          }

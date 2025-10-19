@@ -13,7 +13,10 @@ import { setUser } from "./redux/userSlice.js"
 import Profile from "./pages/Profile.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import EditProfile from "./pages/EditProfile.jsx";
-import AddCourse from "./pages/AddCourse.jsx";
+import Dashboard from "./pages/Educator/Dashboard.jsx";
+import Courses from "./pages/Educator/Courses.jsx";
+import Createcourse from "./pages/Educator/Createcourse.jsx";
+
 
  export const baseUrl  = "http://localhost:5001"
 
@@ -39,6 +42,7 @@ const App = ()=>{
 
     } , [])
    
+    
    return (
        <>  
         <ToastContainer position="top-right" autoClose={3000} />
@@ -51,7 +55,15 @@ const App = ()=>{
             <Route  path="/profile" element={userData ?<Profile/> : <Navigate to="/signup"/>} />
             <Route path="/forgot-password"  element={<ForgotPassword/>}/>
             <Route  path="/edit-profile" element={userData ?<EditProfile/> : <Navigate to="/signup"/>} />
-            <Route path="/educator/dashboard/addCourse" element={userData && userData.role === "educator" ? <AddCourse/> : <Navigate to="/home" />} />
+
+            {/* educator routes*/}
+            <Route path="/educator/dashboard" element={userData && userData.role === "educator" ? <Dashboard/> : <Navigate to="/home" />} />
+            <Route path="/educator/courses" element={userData && userData.role === "educator" ? <Courses/> : <Navigate to="/home" />} />
+            <Route path="/educator/create-course" element={userData && userData.role === "educator" ? <Createcourse/> : <Navigate to="/home" />} />
+
+
+
+
             
 
 

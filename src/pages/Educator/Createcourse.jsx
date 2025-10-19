@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react'
-import Nav from '../component/Nav'
-import { useCloudinaryUpload } from '../customHooks/useCloudinaryUpload'
+import Nav from '../../component/Nav'
+import { useCloudinaryUpload } from '../../customHooks/useCloudinaryUpload'
 import axios from 'axios'
-import { baseUrl } from '../App'
+import { baseUrl } from '../../App'
 import { toast } from 'react-toastify'
+import ClipLoader from 'react-spinners/ClipLoader'
 
-const AddCourse = () => {
+const Createcourse = () => {
   const [title, setTitle] = useState("")
   const [subTitle, setSubTitle] = useState("")
   const [description, setDescription] = useState("")
@@ -16,9 +17,13 @@ const AddCourse = () => {
   // New state for media schema
   const [images, setImages] = useState([]) // array of { url, publicId }
   const [demoLink, setDemoLink] = useState("") // string URL
-  const [uploading, setUploading] = useState(false)
+  const [uploading, setUploading] = useState(false) ;
+  const [loading , setLoading]    = useState(false)
 
-  // console.log(images)
+
+  console.log(images.length != 0 ? typeof images[0].url : "land")
+
+  console.log(images)
 
   const { uploadImages } = useCloudinaryUpload()
 
@@ -83,14 +88,55 @@ const AddCourse = () => {
                 autoClose: 2000,
                       })
                        }
+                       setLoading(true)
 
             try {  
                  const result =  await axios.post(baseUrl + '/api/course/add-course',  {
                   title,  subTitle , description , mrp, price , isPublished } , {withCredentials : true})  ; 
 
-                  result.data.courseId
+              console.log(result.data.courseId)   ;
+              let courseId =   result.data.courseId  ;
+
+              let sendImages = images?.map((e)=> {
+                    let url =   e.url 
+                    return url 
+              }) 
+
+              console.log(sendImages)
+
+              const uploadThumnail = await axios.post(baseUrl +  '/api/course/add-thumbnail' , 
+                                                        { courseId , images : sendImages , demoLink}  
+                                                      ,     { withCredentials : true})  
+                  if(uploadThumnail.data.success){  
+                        setLoading(false)  ;
+                         resetForm() ;
+                           toast.success('Course added successfully', {
+                                position: "top-right",
+                                autoClose: 200,
+                                theme: "light",
+                           })
+                  }else{ 
+                        setLoading(false)
+                        toast.error('Something went wrong', {
+                              position: "top-right",
+                              autoClose: 200,
+                              theme: "light",
+                        })
+                  }  
+
+
               
-            } catch (error) {
+            } catch (error) {    
+
+              setLoading(false)
+                   
+               console.log(error.response.data.message)
+
+                 toast.error(error.response.data.message , {
+                    position: "top-right",
+                    autoClose: 200,
+                    theme: "light",
+                 })
               
             }
 
@@ -220,20 +266,23 @@ const AddCourse = () => {
         </div>
 
         <div className='flex gap-3 justify-end pt-2'>
-          <button
+          <button 
+           disabled={loading}
             type='button'
             onClick={resetForm}
-            className='bg-gray-200 text-black px-4 py-2 rounded-xl'
+            className=' cursor-pointer bg-gray-200 text-black px-4 py-2 rounded-xl'
           >
             Reset
           </button>
-          <button 
-          onClick={uploadCourseDetails}
-           type='button' className='bg-black text-white px-4 py-2 rounded-xl'>Save </button>
+          <button   
+           
+           disabled ={loading}
+           onClick={uploadCourseDetails}
+           type='button' className= 'bg-black cursor-pointer text-white px-4 py-2 rounded-xl'>{loading ? <ClipLoader/> :  "Save"} </button>
         </div>
       </form>
     </div>
   )
 }
 
-export default AddCourse
+export default Createcourse
