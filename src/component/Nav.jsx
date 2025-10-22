@@ -154,6 +154,7 @@ const Nav = () => {
             </button> 
 
             <button 
+            onClick={()=>navigate("/educator/courses")}
            className='bg-black hover:bg-[#54535355] transition-colors hover:text-black p-2 rounded-2xl '
              >
               My Courses
@@ -199,6 +200,7 @@ const Nav = () => {
             </button> 
 
             <button 
+            onClick={()=>navigate("/educator/courses")}
            className='bg-black border-2 px-12 border-white hover:bg-[#54535355] transition-colors py-6 rounded-2xl '
              >
               My Courses

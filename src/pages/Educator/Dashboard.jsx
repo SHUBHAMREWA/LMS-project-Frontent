@@ -7,14 +7,14 @@ const Dashboard = () => {
 
 
   return (
-    <div className='w-full min-h-screen bg-[#f2f4f5]'>   
+    <div className='w-full min-h-screen  bg-[#f2f4f5]'>   
 
 
-          <div className='w-full h-full  '> 
+          <div className='w-full h-full  flex  flex-col gap-3 justify-center items-center'> 
 
 
                {/* show educatro Details */}
-                 <div className='flex flex-col lg:flex-row bg-white px-15 gap-3 lg:justify '>
+                 <div className='w-[70%] shadow rounded-2xl mt-3 p-2 flex flex-col lg:flex-row bg-white px-15 gap-3 lg:justify '>
                  
                   <div className=''>
                        <img src={image} alt="" className='h-25 w-25 rounded-full p-2 border-4 border-black' /> 
@@ -28,8 +28,12 @@ const Dashboard = () => {
                    </div>
 
                  </div>
-              
-             
+                
+
+                {/*  Dashboard product puchase Chart */} 
+                <div>
+
+                </div>             
 
 
           </div>
