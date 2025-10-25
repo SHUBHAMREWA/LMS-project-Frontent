@@ -1,22 +1,22 @@
 
 import { createSlice } from "@reduxjs/toolkit";  
 
-
-const  courseSlice = createSlice({
-             name : "createSlice" , 
+// Renamed slice and state
+const EducatorCouseSlice = createSlice({
+             name : "EducatorCouseSlice" , 
              initialState : {
-                  courseData : null
+                  educatorCourseData : null
              }   , 
              reducers : {
                     
-                  setCourseData : (state , action) => {     
+                  setEducatorCourseData : (state , action) => {     
 
-                         state.courseData = action.payload ;
+                         state.educatorCourseData = action.payload ;
                   }                 
                   
              }
 })
 
 
-export const {setCourseData} = courseSlice.actions  ;  
-export default courseSlice.reducer ;
+export const { setEducatorCourseData } = EducatorCouseSlice.actions  ;  
+export default EducatorCouseSlice.reducer ;

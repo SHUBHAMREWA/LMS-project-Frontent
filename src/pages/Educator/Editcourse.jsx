@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Nav from '../../component/Nav'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { baseUrl } from '../../App'
 import { useCloudinaryUpload } from '../../customHooks/useCloudinaryUpload'
@@ -20,6 +20,18 @@ const Editcourse = () => {
   const [demoLink, setDemoLink] = useState("")
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [category, setCategory] = useState("")
+
+  const categories = [
+    "Web Devlopment",
+    "UI/UX designing",
+    "AI/ML",
+    "App Dev",
+    "Ethical Hacking",
+    "Data Analytics",
+    "Data Science",
+    "Ai Tools",
+  ]
 
   const { uploadImages } = useCloudinaryUpload()
 
@@ -42,7 +54,17 @@ const Editcourse = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${baseUrl}/api/course/getcourse-by-id/${id}` , { withCredentials: true })
+        const res = await axios.get(`${baseUrl}/api/course/getcourse-by-id/${id}` , { withCredentials: true })  
+
+        console.log(res.data)
+       
+        if(res.data.success === false){
+           navigator("/educator/courses")
+           
+           toast.error(res.data.message)
+           return
+        }
+         
         const { course, tumbnail } = res.data.courseData
         setTitle(course.title || "")
         setSubTitle(course.subTitle || "")
@@ -53,7 +75,9 @@ const Editcourse = () => {
         const imgs = Array.isArray(tumbnail?.images) ? tumbnail.images.map(url => ({ url, publicId: derivePublicId(url) })) : []
         setImages(imgs)
         setDemoLink(tumbnail?.demoLink || "")
+        setCategory(course?.category || "")
       } catch (err) {
+        navigator("/educator/courses")
         toast.error(err?.response?.data?.message || 'Failed to load course')
       }
     }
@@ -97,6 +121,7 @@ const Editcourse = () => {
         courseId: id,
         demoLink,
         images: images.map(i => i.url),
+        category,
       }, { withCredentials: true })
       if (res.data?.success) {
         toast.success('Course updated') 
@@ -109,6 +134,47 @@ const Editcourse = () => {
     } finally {
       setLoading(false)
     }
+  }
+
+  const deleteCourse  = async()=>{    
+      
+        let res = window.confirm("Do you Want to  delete  this Course ?")
+
+        if(!res){
+           return toast.success('Course not deleted', {
+                position: "top-right",
+                autoClose: 200,
+                theme: "light",
+            })
+        }
+
+        setLoading(true)
+
+    try {
+
+         let res = await axios.delete(baseUrl + `/api/course/delete-course/${id}` , { withCredentials : true}) 
+  
+           setLoading(false)
+         if(res.data.success){
+           return  toast.success('Course deleted successfully', {
+                position: "top-right",
+                autoClose: 200,
+                theme: "light",
+            })
+         }
+      
+    } catch (error) {  
+             setLoading(false)
+       return toast.error(error.response.data.message , {
+            position: "top-right",
+            autoClose: 200,
+            theme: "light",
+       })
+
+      
+    }
+          
+
   }
 
   return (
@@ -151,16 +217,32 @@ const Editcourse = () => {
           </div>
         </div>
 
+        {/* Category */}
+        <div className='flex flex-col gap-1'>
+          <label className='font-semibold' htmlFor='category'>Category</label>
+          <select
+            id='category'
+            value={category}
+            onChange={(e)=>setCategory(e.target.value)}
+            className='w-full md:w-1/2 outline-none shadow border border-s-0 border-e-0 bg-gray-50 border-gray-400 p-2'
+          >
+            <option value=''>Select category (optional)</option>
+            {categories.map((c)=>(<option key={c} value={c}>{c}</option>))}
+          </select>
+        </div>
+
         <div className='flex flex-col gap-3'>
           <label className='font-semibold'>Course Thumbnails</label>
-          <input type='file' accept='image/*' multiple onChange={handleSelectImages} className='w-full' />
+          <input type='file' accept='image/*' multiple onChange={handleSelectImages} className='w-full 
+          text-white cursor-pointer bg-black rounded-2xl px-2 py-2' />
           {uploading && <span className='text-sm text-gray-500'>Uploading...</span>}
           {images.length > 0 && (
             <div className='grid grid-cols-3 sm:grid-cols-4 gap-3'>
               {images.map((item) => (
                 <div key={item.url} className='relative group'>
                   <img src={item.url} alt='thumb' className='w-full h-24 object-cover rounded' />
-                  <button type='button' onClick={() => removeImage(item)} className='absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-0.5 rounded opacity-0 group-hover:opacity-100'>Remove</button>
+                  <button type='button' onClick={() => removeImage(item)} className='absolute  cursor-pointer
+                  top-1 right-1 bg-black/60 text-white text-xs px-2 py-0.5 rounded opacity-0 group-hover:opacity-100'>Remove</button>
                 </div>
               ))}
             </div>
@@ -172,7 +254,20 @@ const Editcourse = () => {
           <input id='demoLink' type='url' value={demoLink} onChange={(e)=>setDemoLink(e.target.value)} className='w-full outline-none shadow border border-s-0 border-e-0 bg-gray-50 border-gray-400 p-2' />
         </div>
 
-        <div className='flex gap-3 justify-end pt-2 cursor-pointer '>
+        <div className='flex gap-3 justify-end pt-2 cursor-pointer '>  
+           <button  
+           onClick={()=>navigator("/educator/courses")}
+           className='bg-[#f6f4f5] text-black px-4 py-2 rounded-xl cursor-pointer '
+           >
+              Cancel
+           </button> 
+            <button  
+            disabled={loading}
+            onClick={()=>deleteCourse()}
+            className='bg-red-500 cursor-pointer px-2 py-2 rounded-xl  text-white'
+            >
+               {loading ? <ClipLoader size={18} color='#ffffff' /> : 'Delete Course'}
+            </button>
           <button type='button' onClick={saveChanges} disabled={loading || uploading} className='bg-black text-white px-4 py-2 rounded-xl cursor-pointer '>
             {loading ? <ClipLoader size={18} color='#ffffff' /> : 'Save Changes'}
           </button>

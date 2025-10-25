@@ -19,7 +19,18 @@ const Createcourse = () => {
   const [demoLink, setDemoLink] = useState("") // string URL
   const [uploading, setUploading] = useState(false) ;
   const [loading , setLoading]    = useState(false)
+  const [category, setCategory] = useState("")
 
+  const categories = [
+    "Web Devlopment",
+    "UI/UX designing",
+    "AI/ML",
+    "App Dev",
+    "Ethical Hacking",
+    "Data Analytics",
+    "Data Science",
+    "Ai Tools",
+  ]
 
   console.log(images.length != 0 ? typeof images[0].url : "land")
 
@@ -92,7 +103,7 @@ const Createcourse = () => {
 
             try {  
                  const result =  await axios.post(baseUrl + '/api/course/add-course',  {
-                  title,  subTitle , description , mrp, price , isPublished } , {withCredentials : true})  ; 
+                  title,  subTitle , description , mrp, price , isPublished , category } , {withCredentials : true})  ; 
 
               console.log(result.data.courseId)   ;
               let courseId =   result.data.courseId  ;
@@ -224,6 +235,20 @@ const Createcourse = () => {
           </div>
         </div>
 
+        {/* Category */}
+        <div className='flex flex-col gap-1'>
+          <label className='font-semibold' htmlFor='category'>Category</label>
+          <select
+            id='category'
+            value={category}
+            onChange={(e)=>setCategory(e.target.value)}
+            className='w-full md:w-1/2 outline-none shadow border border-s-0 border-e-0 bg-gray-50 border-gray-400 p-2'
+          >
+            <option value=''>Select category (optional)</option>
+            {categories.map((c)=>(<option key={c} value={c}>{c}</option>))}
+          </select>
+        </div>
+
         {/* Media Section */}
         <div className='flex flex-col gap-3'>
           <label className='font-semibold'>Course Thumbnails</label>
@@ -232,7 +257,7 @@ const Createcourse = () => {
             accept='image/*'
             multiple
             onChange={handleSelectImages}
-            className='w-full'
+            className='w-full cursor-pointer bg-black text-white px-4 py-2 rounded-xl'
           />
           {uploading && <span className='text-sm text-gray-500'>Uploading...</span>}
           {images.length > 0 && (

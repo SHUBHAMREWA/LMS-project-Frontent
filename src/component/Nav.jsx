@@ -88,7 +88,9 @@ const Nav = () => {
      ${isScrolled ? "backdrop-blur-sm " : ""} transition-all 
      justify-between items-center`}>
       {/* Left side - Logo */}
-      <div className=' lg:w-[20%]  w-[30%] flex items-center transition-all lg:pl-12 pl-2'>
+      <div  
+       onClick={()=>navigate("/")}
+       className=' lg:w-[20%]  w-[30%] flex items-center transition-all lg:pl-12 pl-2 cursor-pointer'>
         <img src={Logo} alt="Logo" width={60} height={60} className='border-2  border-white rounded-2xl' />
       
       </div>
