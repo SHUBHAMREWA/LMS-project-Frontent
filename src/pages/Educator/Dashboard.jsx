@@ -1,13 +1,16 @@
 import React from 'react'
 
 import  image from "../../assets/empty.jpg"
+import Nav from '../../component/Nav'
 
 const Dashboard = () => {
 
 
 
   return (
-    <div className='w-full min-h-screen  bg-[#f2f4f5]'>   
+    <div className='w-full min-h-screen  bg-[#f2f4f5]'>    
+       
+         <Nav/>
 
 
           <div className='w-full h-full  flex  flex-col gap-3 justify-center items-center'> 

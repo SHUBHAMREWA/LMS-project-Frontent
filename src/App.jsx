@@ -17,6 +17,7 @@ import Dashboard from "./pages/Educator/Dashboard.jsx";
 import Courses from "./pages/Educator/Courses.jsx";
 import Createcourse from "./pages/Educator/Createcourse.jsx";
 import Editcourse from "./pages/Educator/Editcourse.jsx";
+import AddModuleLessons from "./pages/Educator/AddModuleLessons.jsx";
 import AllCourses from "./pages/AllCourses.jsx";
 
 
@@ -63,6 +64,7 @@ const App = ()=>{
             <Route path="/educator/courses" element={userData && userData.role === "educator" ? <Courses/> : <Navigate to="/home" />} />
             <Route path="/educator/create-course" element={userData && userData.role === "educator" ? <Createcourse/> : <Navigate to="/home" />} />
             <Route path="/educator/edit-course/:id" element={userData && userData.role === "educator" ? <Editcourse/> : <Navigate to="/home" />} />
+            <Route path="/educator/add-modules-lessons" element={userData && userData.role === "educator" ? <AddModuleLessons/> : <Navigate to="/home" />} />
 
 
             {/* Show All Courses */}

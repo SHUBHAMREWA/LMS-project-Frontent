@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch , useSelector } from 'react-redux'  ;
 import Nav from '../component/Nav'; 
 import HomeImg from "../assets/home1.jpg"
@@ -8,12 +8,18 @@ import ai1 from "../assets/SearchAi.png"
 import { GiArmoredBoomerang } from "react-icons/gi";
 import LogoforHomePage from '../component/LogoforHomePage';
 import ExploreCourses from '../component/ExploreCourses';
+import ShowCard from '../component/ShowCard';
+import useGetAllCourses from '../customHooks/getAllCourses';
 
 
 const Homepage = () => {  
         
        const dispatch = useDispatch() ;
-       const user = useSelector((state)=>state.user) ;
+       const user = useSelector((state)=>state.user) ; 
+
+      
+    
+      useGetAllCourses() ;
 
 
   return (
@@ -53,7 +59,8 @@ const Homepage = () => {
         <LogoforHomePage/>
 
         <ExploreCourses/>
-
+  
+        <ShowCard/>
         
 
         </div>

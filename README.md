@@ -1,23 +1,42 @@
-├── public
-    └── logo.jpg
-├── src
-    ├── App.css
-    ├── App.jsx
-    ├── assets/
-    │  
-    ├── customHooks
-    │   └── getCurrentUser.js
-    ├── index.css
-    ├── main.jsx
-    ├── pages
-    │   ├── Homepage.jsx
-    │   ├── LoginPage.jsx
-    │   └── SignupPage.jsx
-    └── redux
-    │   ├── store.js
-    │   └── userSlice.js
 
-
+├── src/
+│   ├── pages/           # All pages
+│   │   ├── Homepage.jsx
+│   │   ├── LoginPage.jsx, SignupPage.jsx
+│   │   ├── Profile.jsx, EditProfile.jsx
+│   │   ├── AllCourses.jsx
+│   │   └── Educator/     # Educator-specific pages
+│   │       ├── Dashboard.jsx
+│   │       ├── Courses.jsx
+│   │       ├── Createcourse.jsx
+│   │       └── Editcourse.jsx
+│   │
+│   ├── component/       # Reusable components
+│   │   ├── Nav.jsx
+│   │   ├── Card.jsx, ShowCard.jsx
+│   │   ├── ExploreCourses.jsx
+│   │   └── LogoforHomePage.jsx
+│   │
+│   ├── redux/           # State management
+│   │   ├── store.js
+│   │   ├── userSlice.js           # User data
+│   │   ├── educatorSlice.js       # Educator courses
+│   │   └── allCourseSlice.js      # All courses
+│   │
+│   ├── customHooks/     # Custom React hooks
+│   │   ├── getCurrentUser.js
+│   │   ├── getAllCourses.js
+│   │   ├── getEducatorCourse.js
+│   │   ├── getThumnail.js
+│   │   └── useCloudinaryUpload.js
+│   │
+│   ├── assets/          # Images, icons
+│   └── App.jsx          # Main routing
+│
+├── utils/
+│   └── firebase.js      # Firebase config
+│
+└── package.json
 
 
 ---
