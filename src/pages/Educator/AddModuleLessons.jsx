@@ -14,6 +14,8 @@ const AddModuleLessons = () => {
   getEducatorCourse()
   const { educatorCourseData } = useSelector(state => state.educatorCourseData)
 
+  console.log( "educatorCourseData",educatorCourseData )
+
   // State
   const [selectedCourseId, setSelectedCourseId] = useState("")
   const [showModuleForm, setShowModuleForm] = useState(false)
@@ -50,11 +52,13 @@ const AddModuleLessons = () => {
   // Fetch modules for a course
   const fetchModules = async (courseId) => {
     try {
-      const response = await axios.get(`${baseUrl}/api/module/get-modules/${courseId}`, {
+      const response = await axios.get(`${baseUrl}/api/course/get-modules/${courseId}`, {
         withCredentials: true
-      })
+      })  
+       
+      // console.log(response.data.moduleData)
       if (response.data.success) {
-        setModules(response.data.modules || [])
+        setModules(response.data.moduleData || [])
       }
     } catch (error) {
       console.log("Error fetching modules:", error)
@@ -65,11 +69,14 @@ const AddModuleLessons = () => {
   // Fetch lessons for a module
   const fetchLessons = async (moduleId) => {
     try {
-      const response = await axios.get(`${baseUrl}/api/lesson/get-lessons/${moduleId}`, {
+      const response = await axios.get(`${baseUrl}/api/course/get-lessons/${moduleId}`, {
         withCredentials: true
       })
+      
+      console.log( "this is lesson data" ,response.data.lessonData)
+
       if (response.data.success) {
-        setLessons(response.data.lessons || [])
+        setLessons(response.data.lessonData || [])
       }
     } catch (error) {
       console.log("Error fetching lessons:", error)
@@ -96,11 +103,11 @@ const AddModuleLessons = () => {
     setLoading(true)
     try {
       const response = await axios.post(
-        `${baseUrl}/api/module/add-module`,
+        `${baseUrl}/api/course/add-module`,
         {
           courseId: selectedCourseId,
           name: moduleName,
-          number: parseInt(moduleNumber)
+          number: moduleNumber
         },
         { withCredentials: true }
       )
@@ -144,13 +151,13 @@ const AddModuleLessons = () => {
     setLoading(true)
     try {
       const response = await axios.post(
-        `${baseUrl}/api/lesson/add-lesson`,
+        `${baseUrl}/api/course/add-lesson`,
         {
           moduleId: selectedModuleId,
-          name: lessonName,
-          number: parseInt(lessonNumber),
-          lessonDetails: lessonDetails,
-          videoUrl: videoUrl
+           lessonName,
+          lessonNumber,
+           lessonDetails,
+           videoUrl
         },
         { withCredentials: true }
       )
@@ -177,6 +184,49 @@ const AddModuleLessons = () => {
     }
   }
 
+  // Delete Module
+  const handleDeleteModule = async (moduleId) => {
+    if (!moduleId) return
+    const ok = window.confirm('Delete this module? This may remove its lessons.')
+    if (!ok) return
+    setLoading(true)
+    try {
+      const res = await axios.delete(`${baseUrl}/api/course/module-delete/${moduleId}`, { withCredentials: true })
+      if (res.data?.success) {
+        toast.success('Module deleted', { position: 'top-right', autoClose: 2000 })
+        if (selectedModuleId === moduleId) {
+          setSelectedModuleId('')
+          setLessons([])
+          setShowLessonForm(false)
+        }
+        await fetchModules(selectedCourseId)
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete module', { position: 'top-right', autoClose: 2000 })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Delete Lesson
+  const handleDeleteLesson = async (lessonId) => {
+    if (!lessonId) return
+    const ok = window.confirm('Delete this lesson?')
+    if (!ok) return
+    setLoading(true)
+    try {
+      const res = await axios.delete(`${baseUrl}/api/course/lesson-delete/${lessonId}`, { withCredentials: true })
+      if (res.data?.success) {
+        toast.success('Lesson deleted', { position: 'top-right', autoClose: 2000 })
+        await fetchLessons(selectedModuleId)
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete lesson', { position: 'top-right', autoClose: 2000 })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // Handle module selection for lessons
   const handleModuleSelect = async (moduleId) => {
     setSelectedModuleId(moduleId)
@@ -190,11 +240,11 @@ const AddModuleLessons = () => {
   }
 
   return (
-    <div className='w-full min-h-screen bg-[#f2f4f5] pb-10'>
+    <div className='w-full min-h-screen bg-black text-white pb-10'>
       <Nav />
       
       <div className='w-full flex justify-center items-start pt-20 px-4'>
-        <div className='bg-white w-full max-w-6xl rounded-2xl shadow p-6 md:p-10 flex flex-col gap-6'>
+        <div className='bg-white text-black w-full max-w-6xl rounded-2xl shadow p-6 md:p-10 flex flex-col gap-6'>
           
           {/* Header */}
           <div className='text-center'>
@@ -229,7 +279,7 @@ const AddModuleLessons = () => {
                 </h2>
                 <button
                   onClick={() => setShowModuleForm(!showModuleForm)}
-                  className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition'
+className='bg-black hover:bg-gray-900 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition border border-gray-800 hover:cursor-pointer'
                 >
                   <FiPlus /> Add Module
                 </button>
@@ -237,7 +287,7 @@ const AddModuleLessons = () => {
 
               {/* Add Module Form */}
               {showModuleForm && (
-                <div className='bg-blue-50 p-5 rounded-lg border border-blue-200'>
+                <div className='bg-white p-5 rounded-lg border border-gray-200 text-black'>
                   <h3 className='font-semibold text-lg mb-3'>Create New Module</h3>
                   
                   <div className='flex flex-col md:flex-row gap-4'>
@@ -270,13 +320,13 @@ const AddModuleLessons = () => {
                     <button
                       onClick={handleAddModule}
                       disabled={loading}
-                      className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition disabled:opacity-50'
+className='bg-black hover:bg-gray-900 text-white px-6 py-2 rounded-lg transition disabled:opacity-50 hover:cursor-pointer'
                     >
                       {loading ? <ClipLoader size={18} color="#ffffff" /> : "Save Module"}
                     </button>
                     <button
                       onClick={() => setShowModuleForm(false)}
-                      className='bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-lg transition'
+className='bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-lg transition hover:cursor-pointer'
                     >
                       Cancel
                     </button>
@@ -290,7 +340,7 @@ const AddModuleLessons = () => {
                   modules.map((module) => (
                     <div
                       key={module._id}
-                      className='bg-gray-50 p-4 rounded-lg border border-gray-200 hover:shadow-md transition cursor-pointer'
+                      className='bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition cursor-pointer text-black'
                       onClick={() => handleModuleSelect(module._id)}
                     >
                       <div className='flex justify-between items-start'>
@@ -298,9 +348,18 @@ const AddModuleLessons = () => {
                           <h3 className='font-bold text-lg'>Module {module.number}</h3>
                           <p className='text-gray-600'>{module.name}</p>
                         </div>
-                        <span className='bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs'>
-                          {module.lessons?.length || 0} Lessons
-                        </span>
+                        <div className='flex items-center gap-2'>
+                          <span className='bg-black text-white px-2 py-1 rounded text-xs'>
+                            {module.lessons?.length || 0} Lessons
+                          </span>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleDeleteModule(module._id) }}
+className='text-red-600 hover:text-red-700 p-1 rounded hover:cursor-pointer'
+                            title='Delete Module'
+                          >
+                            <FiTrash2 size={16} />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))
@@ -321,7 +380,7 @@ const AddModuleLessons = () => {
               </div>
 
               {/* Add Lesson Form */}
-              <div className='bg-green-50 p-5 rounded-lg border border-green-200'>
+              <div className='bg-white p-5 rounded-lg border border-gray-200 text-black'>
                 <h3 className='font-semibold text-lg mb-3'>Add New Lesson</h3>
                 
                 <div className='flex flex-col gap-4'>
@@ -380,7 +439,7 @@ const AddModuleLessons = () => {
                   <button
                     onClick={handleAddLesson}
                     disabled={loading}
-                    className='bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition disabled:opacity-50'
+className='bg-black hover:bg-gray-900 text-white px-6 py-2 rounded-lg transition disabled:opacity-50 hover:cursor-pointer'
                   >
                     {loading ? <ClipLoader size={18} color="#ffffff" /> : "Save Lesson"}
                   </button>
@@ -390,7 +449,7 @@ const AddModuleLessons = () => {
                       setSelectedModuleId("")
                       setLessons([])
                     }}
-                    className='bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-lg transition'
+                    className='bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-lg transition hover:cursor-pointer'
                   >
                     Cancel
                   </button>
@@ -400,7 +459,7 @@ const AddModuleLessons = () => {
               {/* Display Lessons */}
               <div className='grid grid-cols-1 gap-3'>
                 {lessons.length > 0 ? (
-                  lessons.map((lesson, index) => (
+                  lessons.map((lesson) => (
                     <div
                       key={lesson._id}
                       className='bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition'
@@ -413,11 +472,18 @@ const AddModuleLessons = () => {
                             href={lesson.videoUrl} 
                             target='_blank' 
                             rel='noopener noreferrer'
-                            className='text-blue-600 text-sm mt-2 inline-block hover:underline'
+                            className='text-black text-sm mt-2 inline-block hover:underline'
                           >
                             📹 Watch Video
                           </a>
                         </div>
+                        <button
+                          onClick={() => handleDeleteLesson(lesson._id)}
+className='text-red-600 hover:text-red-700 p-1 rounded hover:cursor-pointer'
+                          title='Delete Lesson'
+                        >
+                          <FiTrash2 size={16} />
+                        </button>
                       </div>
                     </div>
                   ))
