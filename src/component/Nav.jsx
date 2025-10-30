@@ -129,7 +129,7 @@ const Nav = () => {
 
         <span 
         onClick={logoutFunction}
-        className='bg-white  shadow  cursor-pointer  p-2  rounded-xl border-2 border-white'>
+        className='bg-white  shadow text-black cursor-pointer  p-2  rounded-xl border-2 border-white'>
            LogOut
         </span>   
 
