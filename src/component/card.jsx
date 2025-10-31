@@ -61,21 +61,7 @@ const Card = ({ title, mrp, price, category, images, id }) => {
           {title}
         </h3>
 
-        {/* Stats Row */}
-        <div className='flex items-center gap-4 text-xs text-gray-600 flex-shrink-0'>
-          <div className='flex items-center gap-1.5'>
-            <FaStar className='text-yellow-500 text-sm' />
-            <span className='font-bold text-gray-900'>{rating}</span>
-          </div>
-          <div className='flex items-center gap-1.5'>
-            <FaUserGraduate className='text-gray-500' />
-            <span className='font-semibold'>{students.toLocaleString()}</span>
-          </div>
-          <div className='flex items-center gap-1.5'>
-            <FaClock className='text-gray-500' />
-            <span className='font-semibold'>{lessons} lessons</span>
-          </div>
-        </div>
+      
 
         {/* Spacer to push price to bottom */}
         <div className='flex-grow'></div>

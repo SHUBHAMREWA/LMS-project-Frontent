@@ -19,6 +19,7 @@ import Createcourse from "./pages/Educator/Createcourse.jsx";
 import Editcourse from "./pages/Educator/Editcourse.jsx";
 import AddModuleLessons from "./pages/Educator/AddModuleLessons.jsx";
 import AllCourses from "./pages/AllCourses.jsx";
+import ShowCourse from "./pages/ShowCourse.jsx";
 
 
  export const baseUrl  = "http://localhost:5001"
@@ -65,10 +66,13 @@ const App = ()=>{
             <Route path="/educator/create-course" element={userData && userData.role === "educator" ? <Createcourse/> : <Navigate to="/home" />} />
             <Route path="/educator/edit-course/:id" element={userData && userData.role === "educator" ? <Editcourse/> : <Navigate to="/home" />} />
             <Route path="/educator/add-modules-lessons" element={userData && userData.role === "educator" ? <AddModuleLessons/> : <Navigate to="/home" />} />
+            
 
 
             {/* Show All Courses */}
             <Route path="/allCourses" element={<AllCourses/>} />
+            {/* Public course details */}
+            <Route path="/course/:id" element={<ShowCourse/>} />
 
 
 

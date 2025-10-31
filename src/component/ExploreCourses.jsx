@@ -34,7 +34,7 @@ Unlock your potential with our expertly designed courses that combine real-world
 
                 <button 
                 onClick={()=>navigate("/allCourses")}
-                 className='font-semibold text-white bg-black  border-2  lg:text-xl
+                 className='font-semibold text-white bg-black  border-2  lg:text-xl hover:shadow-2xl transition-all
                         rounded-2xl border-black py-3 lg:px-4 px-1  cursor-pointer' >Explore Courses 
                          <GiArmoredBoomerang className='inline-block ml-2 text-xl text-white '/>
                 </button>
