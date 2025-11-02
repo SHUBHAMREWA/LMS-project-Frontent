@@ -466,7 +466,7 @@ const AddModuleLessons = () => {
                               </div>
                               <div className='flex items-center gap-2'>
                                 <span className='bg-white/10 text-gray-200 px-2 py-1 rounded text-xs border border-gray-700'>
-                                  {module.lessons?.length || 0} Lessons
+                                  {(typeof module.lessonsCount === 'number' ? module.lessonsCount : (module.lessons?.length || 0))} Lessons
                                 </span>
                                 <button
                                   onClick={(e) => { e.stopPropagation(); handleDeleteModule(module._id) }}

@@ -1,5 +1,5 @@
-
-
+ 
+ 
 import { Navigate, Route , Routes } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import LoginPage from "./pages/LoginPage";
@@ -20,10 +20,10 @@ import Editcourse from "./pages/Educator/Editcourse.jsx";
 import AddModuleLessons from "./pages/Educator/AddModuleLessons.jsx";
 import AllCourses from "./pages/AllCourses.jsx";
 import ShowCourse from "./pages/ShowCourse.jsx";
-
-
- export const baseUrl  = "http://localhost:5001"
-
+ 
+ 
+ export const baseUrl  = import.meta.env.VITE_API_URL || ""
+ 
 const App = ()=>{ 
 
      const dispatch = useDispatch() ;

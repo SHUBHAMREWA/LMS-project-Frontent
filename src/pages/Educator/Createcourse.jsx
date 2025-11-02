@@ -6,8 +6,12 @@ import axios from 'axios'
 import { baseUrl } from '../../App'
 import { toast } from 'react-toastify'
 import ClipLoader from 'react-spinners/ClipLoader'
+import { useNavigate } from 'react-router-dom'
 
 const Createcourse = () => {
+  
+   const navigate = useNavigate()
+
   const [title, setTitle] = useState("")
   const [subTitle, setSubTitle] = useState("")
   const [description, setDescription] = useState("")
@@ -126,6 +130,7 @@ const Createcourse = () => {
                                 autoClose: 200,
                                 theme: "light",
                            })
+                           navigate('/educator/courses')
                   }else{ 
                         setLoading(false)
                         toast.error('Something went wrong', {

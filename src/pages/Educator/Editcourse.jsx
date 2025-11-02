@@ -54,28 +54,29 @@ const Editcourse = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${baseUrl}/api/course/getcourse-by-id/${id}` , { withCredentials: true })  
-
+        const res = await axios.get(`${baseUrl}/api/course/getcourse-by-id/${id}`, { withCredentials: true })
         console.log(res.data)
-       
-        if(res.data.success === false){
-           navigator("/educator/courses")
-           
-           toast.error(res.data.message)
-           return
+
+        if (res.data.success === false) {
+          navigator("/educator/courses")
+          toast.error(res.data.message)
+          return
         }
-         
-        const { course, tumbnail } = res.data.courseData
-        setTitle(course.title || "")
-        setSubTitle(course.subTitle || "")
-        setDescription(course.description || "")
-        setMrp(course.mrp || "")
-        setPrice(course.price || "")
-        setIsPublished(!!course.isPublished)
-        const imgs = Array.isArray(tumbnail?.images) ? tumbnail.images.map(url => ({ url, publicId: derivePublicId(url) })) : []
+
+        // Backend returns a single course object in courseData with `thumbnails`
+        const c = res.data.courseData || {}
+        setTitle(c.title || "")
+        setSubTitle(c.subTitle || "")
+        setDescription(c.description || "")
+        setMrp(c.mrp || "")
+        setPrice(c.price || "")
+        setIsPublished(!!c.isPublished)
+        const imgs = Array.isArray(c.thumbnails?.images)
+          ? c.thumbnails.images.map(url => ({ url, publicId: derivePublicId(url) }))
+          : []
         setImages(imgs)
-        setDemoLink(tumbnail?.demoLink || "")
-        setCategory(course?.category || "")
+        setDemoLink(c.thumbnails?.demoLink || "")
+        setCategory(c.category || "")
       } catch (err) {
         navigator("/educator/courses")
         toast.error(err?.response?.data?.message || 'Failed to load course')
