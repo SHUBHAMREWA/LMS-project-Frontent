@@ -105,7 +105,7 @@ const Nav = () => {
        <div className='lg:flex items-center gap-3 transition-all lg:pr-12 pr-2 hidden'>  
 
        {
-          userData?.photoUrl ?<img 
+          userData?.photoUrl ? <img 
                    onClick={()=> setShow((prev)=> !prev)}
                       src={userData.photoUrl} 
                       alt="Profile" 

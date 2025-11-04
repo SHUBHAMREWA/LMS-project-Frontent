@@ -1,10 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import axios from 'axios'
 import Nav from '../component/Nav'
 import { baseUrl } from '../App'
 import Card from '../component/Card'
 import ClipLoader from 'react-spinners/ClipLoader'
+import { toast } from 'react-toastify'
+import getEnrollCourses from '../customHooks/getEnrollCourses'
 
 // Helper: Convert YouTube or Vimeo URL to embed URL
 const toEmbedUrl = (raw) => {
@@ -42,9 +45,19 @@ const toEmbedUrl = (raw) => {
   }
 }
 
+
+
 const ShowCourse = () => {
+
+    getEnrollCourses() ;
   const { id } = useParams()
   const navigate = useNavigate()
+  const { userData } = useSelector(state => state.user)
+ const { enrollData } = useSelector(state => state.enrollCourseData)
+
+  console.log("tHIS IS eNROLL COURSES",  enrollData)
+
+ 
 
   const [loading, setLoading] = useState(true)
   const [course, setCourse] = useState(null)
@@ -103,6 +116,16 @@ const ShowCourse = () => {
     setSlideIndex(0)
   }, [course])
 
+  // Load Razorpay script once (must be before any early returns)
+  useEffect(() => {
+    const src = 'https://checkout.razorpay.com/v1/checkout.js'
+    if (document.querySelector(`script[src="${src}"]`)) return
+    const s = document.createElement('script')
+    s.src = src
+    s.async = true
+    document.body.appendChild(s)
+  }, [])
+
   // Close player and clear state
   const closePlayer = () => {
     setPlayerOpen(false)
@@ -138,6 +161,70 @@ const ShowCourse = () => {
   }
 
   if (!course) return null
+
+  const handleEnroll = async () => {
+    try {
+      if (!userData?._id) {
+        alert('Please login to enroll')
+        return
+      }
+      // Create order on backend (expects auth cookie)
+      const res = await axios.post(
+        `${baseUrl}/api/enroll/generate-order/${id}`,
+        {},
+        { withCredentials: true }
+      )
+      const order = res.data
+      if (!order?.id) {
+        alert('Unable to initialize payment')
+        return
+      }
+
+      const key = import.meta.env.VITE_RAZORPAY_KEY || import.meta.env.VITE_RZP_KEY
+      if (!key) {
+        alert('Missing VITE_RAZORPAY_KEY in frontend env')
+        return
+      }
+
+      const options = {
+        key,
+        amount: order.amount,
+        currency: order.currency,
+        name: course.title,
+        description: 'Course Enrollment',
+        order_id: order.id,
+        prefill: {
+          name: userData?.name || '',
+          email: userData?.email || '',
+          contact: userData?.phone || ''
+        },
+        notes: { courseId: id },
+        theme: { color: '#111827' },
+        handler: async () => {
+          try {
+            await axios.post(
+              `${baseUrl}/api/enroll/verify-payment`,
+              { courseId: id, userId: userData._id, razorpay_order_id: order.id },
+              { withCredentials: true }
+            )
+            toast.success('Payment successful', {
+              position: 'top-center',
+              autoClose: 2000,
+              theme: 'light'
+            })
+          } catch (e) {
+            alert('Payment verification failed')
+          }
+        }
+      }
+
+      const rzp = new window.Razorpay(options)
+      rzp.open()
+    } catch (e) {
+      console.error(e)
+      alert('Failed to start payment')
+    }
+  }
 
   return (
     <div className='min-h-screen w-full bg-[#0b0f14] text-gray-100'>
@@ -224,7 +311,7 @@ const ShowCourse = () => {
               )}
             </div>
 
-            <button className='mt-4 bg-white text-black px-6 py-3 rounded-xl font-semibold'>Enroll Now</button>
+            <button onClick={handleEnroll} className='mt-4 bg-white text-black px-6 py-3 rounded-xl font-semibold cursor-pointer hover:cursor-pointer'>Enroll Now</button>
           </div>
         </div>
 

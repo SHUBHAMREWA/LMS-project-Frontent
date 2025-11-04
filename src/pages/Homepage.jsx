@@ -10,9 +10,12 @@ import LogoforHomePage from '../component/LogoforHomePage';
 import ExploreCourses from '../component/ExploreCourses';
 import ShowCard from '../component/ShowCard';
 import useGetAllCourses from '../customHooks/getAllCourses';
+import { useNavigate } from 'react-router-dom';
 
 
 const Homepage = () => {  
+
+  const navigate = useNavigate();
         
        const dispatch = useDispatch() ;
        const user = useSelector((state)=>state.user) ; 
@@ -40,7 +43,9 @@ const Homepage = () => {
 
               <div className='text-white absolute lg:top-[25%]   top-[72%] w-[100%] flex justify-center items-center lg:flex-row flex-col
                gap-2 lg:gap-5'>  
-                 <button className='font-semibold text-black lg:border-white border-2  lg:text-xl
+                 <button 
+                 onClick={()=>navigate('/allCourses')}
+                   className='font-semibold text-black lg:border-white border-2  lg:text-xl
                  rounded-2xl border-black py-3 lg:px-4 px-1 lg:text-white  cursor-pointer' >View All Courses 
                    <GiArmoredBoomerang className='inline-block ml-2 text-xl '/>
                  </button>
