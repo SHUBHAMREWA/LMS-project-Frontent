@@ -5,10 +5,10 @@
     box-sizing: border-box;
 }
 
-/* Reset only body, html and default elements */
+/* Reset only margins to avoid clobbering Tailwind padding utilities on headings */
 body, html, h1, h2, h3, h4, h5, h6, p, ul, ol, li {
     margin: 0;
-    padding: 0;
+    /* do NOT reset padding here; let Tailwind utilities (e.g., px-*, py-*) work */
 }
 
 /* Custom Scrollbar - Black & White */

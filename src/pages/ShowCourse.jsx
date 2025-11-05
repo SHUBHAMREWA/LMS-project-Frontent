@@ -8,6 +8,7 @@ import Card from '../component/Card'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { toast } from 'react-toastify'
 import getEnrollCourses from '../customHooks/getEnrollCourses'
+import { FaLock } from 'react-icons/fa'
 
 // Helper: Convert YouTube or Vimeo URL to embed URL
 const toEmbedUrl = (raw) => {
@@ -53,9 +54,15 @@ const ShowCourse = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const { userData } = useSelector(state => state.user)
- const { enrollData } = useSelector(state => state.enrollCourseData)
+ const { enrollCourseData } = useSelector(state => state.enrollCourseData)
 
-  console.log("tHIS IS eNROLL COURSES",  enrollData)
+  console.log("tHIS IS eNROLL COURSES",  enrollCourseData)
+
+  const enrolledIds = useMemo(() => {
+    const arr = Array.isArray(enrollCourseData) ? enrollCourseData : []
+    return new Set(arr.map((e) => String(e?.course?._id || e?.courseId)))
+  }, [enrollCourseData])
+  const isEnrolled = useMemo(() => enrolledIds.has(String(id)), [enrolledIds, id])
 
  
 
@@ -143,6 +150,24 @@ const ShowCourse = () => {
     setCurrentLesson(lesson)
     setCurrentSrc(src)
     setPlayerOpen(true)
+  }
+
+  const watchFirstLesson = () => {
+    try {
+      const firstModule = (modules || []).find(m => Array.isArray(m.lessons) && m.lessons.length > 0)
+      const firstLesson = firstModule?.lessons?.sort((a,b)=>Number(a.number)-Number(b.number))[0]
+      if (!firstLesson) {
+        toast.info('No lessons available yet')
+        return
+      }
+      openLesson(firstLesson)
+    } catch {
+      toast.info('No lessons available yet')
+    }
+  }
+
+  const handleLockedClick = () => {
+    toast.info('Please enroll to watch lessons')
   }
 
   // ESC to close player
@@ -311,7 +336,11 @@ const ShowCourse = () => {
               )}
             </div>
 
-            <button onClick={handleEnroll} className='mt-4 bg-white text-black px-6 py-3 rounded-xl font-semibold cursor-pointer hover:cursor-pointer'>Enroll Now</button>
+            {isEnrolled ? (
+              <button onClick={()=>navigate(`/mycourse/${id}`)} className='mt-4 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-semibold'>Watch now</button>
+            ) : (
+              <button onClick={handleEnroll} className='mt-4 bg-white text-black px-6 py-3 rounded-xl font-semibold'>Enroll Now</button>
+            )}
           </div>
         </div>
 
@@ -344,14 +373,19 @@ const ShowCourse = () => {
                           {(m.lessons || []).sort((a, b) => Number(a.number) - Number(b.number)).map((l) => (
                             <button
                               key={l._id}
-                              onClick={() => openLesson(l)}
-                              className='w-full text-left flex items-start justify-between py-2 border-b border-gray-800 last:border-b-0 hover:bg-white/5 rounded px-2'
+                              onClick={() => (isEnrolled ? openLesson(l) : handleLockedClick())}
+                              className={`w-full text-left flex items-start justify-between py-2 border-b border-gray-800 last:border-b-0 rounded px-2 ${isEnrolled ? 'hover:bg-white/5' : 'cursor-not-allowed opacity-60'}`}
+                              disabled={!isEnrolled}
                             >
                               <div>
                                 <div className='font-medium text-gray-100'>Lesson {l.number}: {l.name}</div>
                                 <div className='text-sm text-gray-400'>{l.lessonDetails}</div>
                               </div>
-                              <div className='text-blue-400 text-sm'>Play ›</div>
+                              {isEnrolled ? (
+                                <div className='text-blue-400 text-sm'>Play ›</div>
+                              ) : (
+                                <div className='flex items-center gap-2 text-zinc-400 text-sm'><FaLock /> Locked</div>
+                              )}
                             </button>
                           ))}
                         </div>

@@ -19,13 +19,13 @@ const getEnrollCourses = () => {
           const fetchEnrollCourse  = async()=>{ 
                 
               try { 
-                  let enrollcourse = await axios.get(baseUrl + "/api/course/getenrollcourses" , {
+                  let enrollcourse = await axios.get(`${baseUrl}/api/course/getenrollcourses` , {
                       withCredentials : true
                   })
 
                   console.log("this is response from server enrollCourse" , enrollcourse)
 
-                  if(enrollCourse.data.success){
+                  if(enrollcourse.data.success){
                       dispatch(setEnrollCourseData(enrollcourse.data.enrollCoursesData))
                   }
                 
@@ -39,7 +39,7 @@ const getEnrollCourses = () => {
 
           fetchEnrollCourse() ;
 
-     } , [enrollCourseData])
+     } , [])
     
   )
 }

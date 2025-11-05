@@ -20,6 +20,8 @@ import Editcourse from "./pages/Educator/Editcourse.jsx";
 import AddModuleLessons from "./pages/Educator/AddModuleLessons.jsx";
 import AllCourses from "./pages/AllCourses.jsx";
 import ShowCourse from "./pages/ShowCourse.jsx";
+import StudentCourse from "./pages/student/StudentCourse.jsx";
+import WatchCourse from "./pages/student/WatchCourse.jsx";
  
  
  export const baseUrl  = import.meta.env.VITE_API_URL || ""
@@ -66,6 +68,11 @@ const App = ()=>{
             <Route path="/educator/create-course" element={userData && userData.role === "educator" ? <Createcourse/> : <Navigate to="/home" />} />
             <Route path="/educator/edit-course/:id" element={userData && userData.role === "educator" ? <Editcourse/> : <Navigate to="/home" />} />
             <Route path="/educator/add-modules-lessons" element={userData && userData.role === "educator" ? <AddModuleLessons/> : <Navigate to="/home" />} />
+
+
+            {/* student routes */}
+            <Route path="/mycourse" element={userData && userData.role === "student" ? <StudentCourse/> : <Navigate to="/home" />} />
+            <Route path="/mycourse/:id" element={userData && userData.role === "student" ? <WatchCourse/> : <Navigate to="/home" />} />
             
 
 

@@ -109,7 +109,7 @@ const Nav = () => {
                    onClick={()=> setShow((prev)=> !prev)}
                       src={userData.photoUrl} 
                       alt="Profile" 
-                      className="w-17 h-17 p-3 rounded-full object-cover"
+                      className="w-17 h-17 cursor-pointer p-3 rounded-full object-cover"
                     /> :   
                            <span 
                onClick={()=> setShow((prev)=> !prev)} className=' bg-gray-200 cursor-pointer text-2xl py-1 px-3 rounded border-2 border-white'> 
@@ -145,19 +145,19 @@ const Nav = () => {
 }
          
          { show &&  <div  
-           className=' absolute flex bg-white flex-col gap-3 p-2 border-2 border-black
+           className=' absolute flex bg-white flex-col gap-3 p-2 border-2 cursor-pointer  border-black
             text-white justify-center top-[130%] rounded-xl '
            > 
             <button  
             onClick= {()=> navigate("/profile")}
-            className='bg-black hover:bg-[#54535355] transition-colors hover:text-black p-2 rounded-2xl '
+            className='bg-black hover:bg-[#54535355] cursor-pointer transition-colors hover:text-black p-2 rounded-2xl '
              >
                My Profile
             </button> 
 
             <button 
             onClick={()=>navigate("/educator/courses")}
-           className='bg-black hover:bg-[#54535355] transition-colors hover:text-black p-2 rounded-2xl '
+           className='bg-black hover:bg-[#54535355] cursor-pointer transition-colors hover:text-black p-2 rounded-2xl '
              >
               My Courses
             </button>
@@ -191,7 +191,7 @@ const Nav = () => {
         </span>
            
          { userData && <div  
-           className='  flex flex-col gap-3 p-2 
+           className='  flex flex-col gap-3 p-2 cursor-pointer
             text-white justify-center top-[130%] rounded-xl '
            > 
             <button  
@@ -202,7 +202,7 @@ const Nav = () => {
             </button> 
 
             <button 
-            onClick={()=>navigate("/educator/courses")}
+            onClick={()=>navigate("/mycourse")}
            className='bg-black border-2 px-12 border-white hover:bg-[#54535355] transition-colors py-6 rounded-2xl '
              >
               My Courses
