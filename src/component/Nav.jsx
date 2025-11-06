@@ -84,7 +84,7 @@ const Nav = () => {
 
   return (
 
-    <nav className={`fixed z-10 top-0 w-full h-[70px] px-6 py-3 bg-[#54535355] flex 
+    <nav className={`fixed z-20 top-0 w-full h-[70px] px-6 py-3 bg-[#54535355] flex 
      ${isScrolled ? "backdrop-blur-sm " : ""} transition-all 
      justify-between items-center`}>
       {/* Left side - Logo */}
@@ -156,7 +156,7 @@ const Nav = () => {
             </button> 
 
             <button 
-            onClick={()=>navigate("/educator/courses")}
+            onClick={()=>navigate( userData.role == "educator" ? "/educator/courses" : "/mycourse")}
            className='bg-black hover:bg-[#54535355] cursor-pointer transition-colors hover:text-black p-2 rounded-2xl '
              >
               My Courses
@@ -202,7 +202,7 @@ const Nav = () => {
             </button> 
 
             <button 
-            onClick={()=>navigate("/mycourse")}
+           onClick={()=>navigate( userData.role == "educator" ? "/educator/courses" : "/mycourse")}
            className='bg-black border-2 px-12 border-white hover:bg-[#54535355] transition-colors py-6 rounded-2xl '
              >
               My Courses

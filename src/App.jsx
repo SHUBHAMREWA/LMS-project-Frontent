@@ -22,6 +22,7 @@ import AllCourses from "./pages/AllCourses.jsx";
 import ShowCourse from "./pages/ShowCourse.jsx";
 import StudentCourse from "./pages/student/StudentCourse.jsx";
 import WatchCourse from "./pages/student/WatchCourse.jsx";
+import About from "./component/About.jsx";
  
  
  export const baseUrl  = import.meta.env.VITE_API_URL || ""
@@ -80,6 +81,7 @@ const App = ()=>{
             <Route path="/allCourses" element={<AllCourses/>} />
             {/* Public course details */}
             <Route path="/course/:id" element={<ShowCourse/>} />
+
 
 
 

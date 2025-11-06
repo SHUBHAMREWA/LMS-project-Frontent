@@ -4,11 +4,12 @@ import { useSelector } from 'react-redux'
 import axios from 'axios'
 import Nav from '../component/Nav'
 import { baseUrl } from '../App'
-import Card from '../component/Card'
+import Card from '../component/Card.jsx'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { toast } from 'react-toastify'
 import getEnrollCourses from '../customHooks/getEnrollCourses'
 import { FaLock } from 'react-icons/fa'
+import { FaStar } from 'react-icons/fa'
 
 // Helper: Convert YouTube or Vimeo URL to embed URL
 const toEmbedUrl = (raw) => {
@@ -73,6 +74,7 @@ const ShowCourse = () => {
   const [activeModuleId, setActiveModuleId] = useState('')
   const [slideIndex, setSlideIndex] = useState(0)
 
+  console.log(course)
   // Player state
   const [playerOpen, setPlayerOpen] = useState(false)
   const [currentLesson, setCurrentLesson] = useState(null)
@@ -121,6 +123,14 @@ const ShowCourse = () => {
 
   useEffect(() => {
     setSlideIndex(0)
+  }, [course])
+
+  // Reviews summary
+  const { avgRating, reviewCount, reviews } = useMemo(() => {
+    const list = (course && Array.isArray(course.reviews)) ? course.reviews : []
+    const count = list.length
+    const avg = count ? +(list.reduce((a, r) => a + Number(r?.rating || 0), 0) / count).toFixed(1) : 0
+    return { avgRating: avg, reviewCount: count, reviews: list }
   }, [course])
 
   // Load Razorpay script once (must be before any early returns)
@@ -324,7 +334,12 @@ const ShowCourse = () => {
             <h1 className='text-3xl font-semibold text-white'>{course.title}</h1>
             {course.subTitle && <p className='text-gray-300'>{course.subTitle}</p>}
             <div className='flex items-center gap-3 text-sm text-gray-400'>
-              <span>0 (0 reviews)</span>
+              <span className='flex items-center gap-1'>
+                <FaStar className='text-yellow-400' />
+                <span className='text-white'>{avgRating}</span>
+                <span className='text-gray-400'>/5</span>
+                <span className='text-gray-400'>({reviewCount} reviews)</span>
+              </span>
               <span>•</span>
               <span>{course.category || 'General'}</span>
             </div>
@@ -339,7 +354,7 @@ const ShowCourse = () => {
             {isEnrolled ? (
               <button onClick={()=>navigate(`/mycourse/${id}`)} className='mt-4 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-semibold'>Watch now</button>
             ) : (
-              <button onClick={handleEnroll} className='mt-4 bg-white text-black px-6 py-3 rounded-xl font-semibold'>Enroll Now</button>
+              <button onClick={handleEnroll} className='mt-4 cursor-pointer bg-white text-black px-6 py-3 rounded-xl font-semibold'>Enroll Now</button>
             )}
           </div>
         </div>
@@ -402,9 +417,54 @@ const ShowCourse = () => {
           <div></div>
         </div>
 
+        {/* Ratings summary above educator section */}
+        <div className='mt-12 bg-[#0f1318] border border-gray-800 rounded-2xl p-5'>
+          <h3 className='text-xl font-semibold text-white mb-2'>Ratings</h3>
+          <div className='flex items-center gap-3'>
+            <div className='flex items-center'>
+              {[1,2,3,4,5].map((i) => (
+                <FaStar key={i} className={`${i <= Math.round(avgRating) ? 'text-yellow-400' : 'text-gray-600'}`} />
+              ))}
+            </div>
+            <div className='text-white font-medium'>{avgRating}/5</div>
+            <div className='text-gray-400 text-sm'>({reviewCount} reviews)</div>
+          </div>
+        </div>
+
+        {/* Comments/Reviews list */}
+        {reviews && reviews.length > 0 && (
+          <div className='mt-6 bg-[#0f1318] border border-gray-800 rounded-2xl p-5'>
+            <h3 className='text-xl font-semibold text-white mb-3'>Student Reviews</h3>
+            <div className='space-y-4'>
+              {reviews.map((rv) => (
+                <div key={rv._id} className='flex gap-3 items-start bg-black/30 rounded-xl p-4 border border-gray-800'>
+                  <img
+                    src={rv?.student?.photoUrl || '/logo.jpg'}
+                    alt={rv?.student?.name || 'Student'}
+                    className='w-10 h-10 rounded-full object-cover border border-gray-700'
+                  />
+                  <div className='flex-1'>
+                    <div className='flex items-center gap-2'>
+                      <span className='text-white font-medium'>{rv?.student?.name || 'Student'}</span>
+                      <span className='flex items-center'>
+                        {[1,2,3,4,5].map((i) => (
+                          <FaStar key={i} className={`${i <= Number(rv?.rating || 0) ? 'text-yellow-400' : 'text-gray-600'} text-sm`} />
+                        ))}
+                      </span>
+                    </div>
+                    {rv?.comment && (
+                      <p className='text-gray-300 mt-1'>{rv.comment}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Other courses by educator */}
         {otherCourses && otherCourses.length > 0 && (
-          <div className='mt-12'>
+          <div className='mt-6'>
             <div className='flex items-center gap-3 mb-5'>
               <img
                 src={course?.educator?.photoUrl || '/logo.jpg'}

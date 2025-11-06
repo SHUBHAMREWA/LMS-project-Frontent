@@ -11,6 +11,8 @@ import ExploreCourses from '../component/ExploreCourses';
 import ShowCard from '../component/ShowCard';
 import useGetAllCourses from '../customHooks/getAllCourses';
 import { useNavigate } from 'react-router-dom';
+import About from '../component/About';
+import Footer from '../component/Footer';
 
 
 const Homepage = () => {  
@@ -66,7 +68,10 @@ const Homepage = () => {
         <ExploreCourses/>
   
         <ShowCard/>
+
+        <About/>
         
+        <Footer/>
 
         </div>
    

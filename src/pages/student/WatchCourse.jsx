@@ -7,6 +7,7 @@ import { baseUrl } from '../../App'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { toast } from 'react-toastify'
 import getEnrollCourses from '../../customHooks/getEnrollCourses'
+import { FaStar } from 'react-icons/fa'
 
 // Convert common video links to embeddable src
 const toEmbedUrl = (raw) => {
@@ -50,6 +51,12 @@ const WatchCourse = () => {
   // player state
   const [currentLesson, setCurrentLesson] = useState(null)
   const [currentSrc, setCurrentSrc] = useState(null)
+
+  // review state
+  const [rating, setRating] = useState(5)
+  const [hoverRating, setHoverRating] = useState(0)
+  const [comment, setComment] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
   // slides for header card
   const slides = useMemo(() => {
@@ -98,8 +105,8 @@ const WatchCourse = () => {
   useEffect(() => {
     if (!userData?._id) return
     if (!isEnrolled && !loading) {
-      toast.info('Please enroll to watch this course')
-      navigate(`/showcourse/${id}`)
+      // toast.info('Please enroll to watch this course')
+      navigate(`/mycourse/${id}`)
     }
   }, [isEnrolled, loading, navigate, id, userData])
 
@@ -117,6 +124,34 @@ const WatchCourse = () => {
     const src = toEmbedUrl(lesson?.videoUrl)
     setCurrentLesson(lesson)
     setCurrentSrc(src)
+  }
+
+  const submitReview = async (e) => {
+    e.preventDefault()
+    if (!isEnrolled) {
+      toast.info('Enroll to add a review')
+      return
+    }
+    if (!rating) {
+      toast.info('Please select a rating')
+      return
+    }
+    try {
+      setSubmitting(true)
+      await axios.post(
+        `${baseUrl}/api/course/add-review`,
+        { courseId: id, rating, comment },
+        { withCredentials: true }
+      )
+      toast.success('Review added')
+      setRating(5)
+      setHoverRating(0)
+      setComment('')
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Failed to add review')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -247,6 +282,51 @@ const WatchCourse = () => {
                 )}
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Reviews */}
+        <div className='mt-10 w-full lg:w-[70%]'>
+          <div className='bg-[#0f1318] border border-gray-800 rounded-2xl p-5'>
+            <h3 className='text-lg font-semibold text-white mb-4'>Add your review</h3>
+            <form onSubmit={submitReview} className='space-y-4'>
+              {/* Stars */}
+              <div className='flex items-center gap-2'>
+                {[1,2,3,4,5].map((s) => (
+                  <button
+                    type='button'
+                    key={s}
+                    onMouseEnter={() => setHoverRating(s)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    onClick={() => setRating(s)}
+                    className='focus:outline-none'
+                    aria-label={`Rate ${s}`}
+                  >
+                    <FaStar className={`${(hoverRating || rating) >= s ? 'text-yellow-400' : 'text-gray-500'} text-2xl`} />
+                  </button>
+                ))}
+                <span className='ml-2 text-sm text-gray-400'>{rating ? `${rating}/5` : 'Select rating'}</span>
+              </div>
+
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder='Write your feedback (optional)'
+                className='w-full bg-black/40 text-gray-100 border border-gray-700 rounded-xl px-4 py-3 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600'
+                rows={4}
+              />
+
+              <button
+                type='submit'
+                disabled={!isEnrolled || submitting}
+                className={`px-5 py-2 rounded-xl font-medium ${!isEnrolled ? 'bg-gray-600 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-500'} text-white`}
+              >
+                {submitting ? 'Submitting...' : 'Submit Review'}
+              </button>
+              {!isEnrolled && (
+                <div className='text-xs text-gray-400'>You need to enroll to add a review.</div>
+              )}
+            </form>
           </div>
         </div>
       </div>
