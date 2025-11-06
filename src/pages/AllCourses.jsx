@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react'
 import Nav from '../component/Nav'
 import { useSelector } from 'react-redux'
 import useGetAllCourses from '../customHooks/getAllCourses'
-import Card from '../component/Card.jsx'
+import Card from '../component/Card.jsx' 
 import { IoSearchSharp } from "react-icons/io5"
 import { MdFilterAlt } from "react-icons/md"
 import { LiaLaptopCodeSolid } from "react-icons/lia"
