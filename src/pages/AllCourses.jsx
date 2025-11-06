@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react'
 import Nav from '../component/Nav'
 import { useSelector } from 'react-redux'
 import useGetAllCourses from '../customHooks/getAllCourses'
-import Card from '../component/Card.jsx' 
+
 import { IoSearchSharp } from "react-icons/io5"
 import { MdFilterAlt } from "react-icons/md"
 import { LiaLaptopCodeSolid } from "react-icons/lia"
@@ -13,6 +13,7 @@ import { PiDeviceMobileFill } from "react-icons/pi"
 import { SiDatastax } from "react-icons/si"
 import { TbBrandGoogleAnalytics } from "react-icons/tb"
 import { GiArtificialHive } from "react-icons/gi"
+import Card from '../component/Card.jsx'
 
 const AllCourses = () => {  
   
@@ -264,6 +265,7 @@ const AllCourses = () => {
                   className='transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl'
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
+                  
                   <Card
                     id={course._id}
                     title={course.title}
