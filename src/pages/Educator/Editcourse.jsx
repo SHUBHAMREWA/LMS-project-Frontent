@@ -155,7 +155,10 @@ const Editcourse = () => {
 
          let res = await axios.delete(baseUrl + `/api/course/delete-course/${id}` , { withCredentials : true}) 
   
-           setLoading(false)
+           setLoading(false)  
+           
+            navigator("/educator/courses") 
+        
          if(res.data.success){
            return  toast.success('Course deleted successfully', {
                 position: "top-right",
@@ -163,6 +166,7 @@ const Editcourse = () => {
                 theme: "light",
             })
          }
+         
       
     } catch (error) {  
              setLoading(false)

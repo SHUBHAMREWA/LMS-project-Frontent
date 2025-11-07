@@ -73,13 +73,30 @@ const Dashboard = () => {
           <div className='flex flex-col gap-1 ml-0 lg:ml-3 text-center lg:text-left'>
             <p className='font-bold text-2xl'>Welcome, {userData?.name} 👋</p>
             <p className='font-semibold text-lg'>Total Earning:  ₹{totalEarning}</p>
-            <p className='text-gray-600'>{userData?.discription || 'Full Stack Developer'}</p>
+            <p className='text-gray-600'>{userData?.discription || 'Full Stack Developer'}</p> 
+            <div 
+            className='lg:flex flex-col lg:flex-row gap-1'>
             <button
               onClick={() => navigate('/educator/create-course')}
               className='mt-2 bg-black cursor-pointer text-white px-5 py-2 rounded-xl font-medium w-full lg:w-auto'
             >
               Create Courses
             </button>
+            <button 
+             onClick={() => navigate('/educator/courses')}
+              className='mt-2 bg-black cursor-pointer text-white px-5 py-2 rounded-xl font-medium w-full lg:w-auto'
+             >
+                See All Course
+            </button>
+
+             <button 
+             onClick={() => navigate('/educator/add-modules-lessons')}
+              className='mt-2 bg-black cursor-pointer text-white px-5 py-2 rounded-xl font-medium w-full lg:w-auto'
+             >
+                Add Modules & Lessons
+            </button>
+
+            </div>
           </div>
         </div>
 

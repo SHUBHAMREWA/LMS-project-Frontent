@@ -37,7 +37,12 @@ const Courses = () => {
           <div className='flex-1 flex justify-center'>
             <h1 className='text-xl sm:text-2xl font-bold text-slate-900'>Your Courses</h1>
           </div>
-
+           <button 
+           className='px-4 py-2 rounded-xl text-white bg-black hover:bg-gray-800 transition-colors mr-4'
+           onClick={()=>navigate("/educator/add-modules-lessons")}
+           >
+             Add Modules & Lessons
+           </button>
           <button
             onClick={() => navigate('/educator/create-course')}
             className='px-4 py-2 rounded-xl text-white bg-black hover:bg-gray-800 transition-colors'

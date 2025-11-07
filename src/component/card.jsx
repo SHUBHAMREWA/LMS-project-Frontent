@@ -1,7 +1,7 @@
-import React from 'react'
+
 import photodummy from "../assets/dummpyThumb.png"
 import { useNavigate } from 'react-router-dom'
-import { FaStar, FaUserGraduate, FaClock, FaBookOpen } from 'react-icons/fa'
+import {  FaBookOpen } from 'react-icons/fa'
 import { HiOutlineArrowRight } from 'react-icons/hi'
 
 const Card = ({ title, mrp, price, category, images, id }) => {  
@@ -91,4 +91,4 @@ const Card = ({ title, mrp, price, category, images, id }) => {
   )
 }
 
-export default Card
+export default Card   ;
