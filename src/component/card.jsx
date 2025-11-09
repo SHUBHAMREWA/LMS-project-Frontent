@@ -91,4 +91,5 @@ const Card = ({ title, mrp, price, category, images, id }) => {
   )
 }
 
-export default Card   ;
+
+export {Card}

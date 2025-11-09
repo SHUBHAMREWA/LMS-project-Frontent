@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react'
-import Card from './Card'; 
+
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
+import { Card } from './Card.jsx';
 
 
 
 const ShowCard = () => {    
-
+ 
+ 
        const {allCourses} = useSelector(state => state.allCourses) ;   
 
       const [showHomeCardCourse, setshowHomeCardCourse] = useState(null)

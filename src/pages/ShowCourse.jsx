@@ -3,13 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import Nav from '../component/Nav'
-import { baseUrl } from '../App'
-import Card from '../component/Card.jsx'
+import { baseUrl } from '../App.jsx'
 import ClipLoader from 'react-spinners/ClipLoader'
 import { toast } from 'react-toastify'
 import getEnrollCourses from '../customHooks/getEnrollCourses'
 import { FaLock } from 'react-icons/fa'
 import { FaStar } from 'react-icons/fa'
+import { Card } from '../component/Card.jsx'
 
 // Helper: Convert YouTube or Vimeo URL to embed URL
 const toEmbedUrl = (raw) => {

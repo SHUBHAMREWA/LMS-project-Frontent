@@ -14,12 +14,15 @@ import { PiDeviceMobileFill } from "react-icons/pi"
 import { SiDatastax } from "react-icons/si"
 import { TbBrandGoogleAnalytics } from "react-icons/tb"
 import { GiArtificialHive } from "react-icons/gi"
-import Card from '../component/Card.jsx'
+import { Card } from '../component/Card'
+
+
 
 const AllCourses = () => {  
   
   const { allCourses } = useSelector(state => state.allCourses)
   useGetAllCourses()
+  
 
   const location = useLocation()
 
