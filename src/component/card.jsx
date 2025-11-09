@@ -92,4 +92,5 @@ const Card = ({ title, mrp, price, category, images, id }) => {
 }
 
 
-export {Card}
+export default Card
+export { Card }

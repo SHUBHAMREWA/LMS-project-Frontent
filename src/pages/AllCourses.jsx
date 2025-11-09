@@ -14,7 +14,7 @@ import { PiDeviceMobileFill } from "react-icons/pi"
 import { SiDatastax } from "react-icons/si"
 import { TbBrandGoogleAnalytics } from "react-icons/tb"
 import { GiArtificialHive } from "react-icons/gi"
-import { Card } from '../component/Card'
+import Card from '../component/card.jsx'
 
 
 
