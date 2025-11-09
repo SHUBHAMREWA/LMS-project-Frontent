@@ -52,6 +52,7 @@ const Homepage = () => {
                    <GiArmoredBoomerang className='inline-block ml-2 text-xl '/>
                  </button>
                  <button 
+                 onClick={()=>navigate("/search")}
                  className='font-semibold lg:border-white border-2 lg:text-xl cursor-pointer 
                  rounded-2xl border-black py-3 lg:px-4 p-1 bg-black lg:bg-white lg:text-black  flex gap-2 text-white'
                  >Search With Ai 

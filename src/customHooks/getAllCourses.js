@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 
 // getAllCourses.js
 const useGetAllCourses = () => {   
+
    const dispatch = useDispatch();
    const { allCourses } = useSelector((state) => state.allCourses);
 
@@ -38,6 +39,6 @@ const useGetAllCourses = () => {
 
        getCourse();
 
-   }, [dispatch, allCourses]); // allCourses ko dependency me add karo
+   }, [dispatch]); // allCourses ko dependency me add karo
 }
 export default useGetAllCourses;

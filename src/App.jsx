@@ -23,6 +23,7 @@ import ShowCourse from "./pages/ShowCourse.jsx";
 import StudentCourse from "./pages/student/StudentCourse.jsx";
 import WatchCourse from "./pages/student/WatchCourse.jsx";
 import About from "./component/About.jsx";
+import Search from "./pages/Search.jsx";
  
  
  export const baseUrl  = import.meta.env.VITE_API_URL || ""
@@ -83,7 +84,8 @@ const App = ()=>{
             <Route path="/course/:id" element={<ShowCourse/>} />
 
 
-
+            {/* Search with AI */}
+            <Route path="/search" element={<Search/>} />
 
 
             

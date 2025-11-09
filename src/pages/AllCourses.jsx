@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react'
 import Nav from '../component/Nav'
 import { useSelector } from 'react-redux'
 import useGetAllCourses from '../customHooks/getAllCourses'
+import { useLocation } from 'react-router-dom'
 
 import { IoSearchSharp } from "react-icons/io5"
 import { MdFilterAlt } from "react-icons/md"
@@ -19,6 +20,8 @@ const AllCourses = () => {
   
   const { allCourses } = useSelector(state => state.allCourses)
   useGetAllCourses()
+
+  const location = useLocation()
 
   const [searchKeyword, setSearchKeyword] = useState('')
   const [selectedCategories, setSelectedCategories] = useState([])
@@ -47,6 +50,12 @@ const AllCourses = () => {
   }
 
   // Filter courses based on search and selected categories
+  // Sync search from query param (?search=...)
+  useEffect(() => {
+    const q = new URLSearchParams(location.search).get('search') || ''
+    setSearchKeyword(q)
+  }, [location.search])
+
   const filteredCourses = useMemo(() => {
     if (!allCourses || allCourses.length === 0) return []
 
