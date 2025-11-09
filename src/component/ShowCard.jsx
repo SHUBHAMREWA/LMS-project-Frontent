@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import { Card } from './Card.jsx';
+import { Card } from './card.jsx';
 
 
 
