@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 import getEnrollCourses from '../customHooks/getEnrollCourses'
 import { FaLock } from 'react-icons/fa'
 import { FaStar } from 'react-icons/fa'
-import { Card } from '../component/Card.jsx'
+import Card from '../component/card.jsx'
 
 // Helper: Convert YouTube or Vimeo URL to embed URL
 const toEmbedUrl = (raw) => {
