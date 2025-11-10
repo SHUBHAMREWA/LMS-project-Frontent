@@ -139,38 +139,28 @@ const EditProfile = () => {
   
  
    return (
-     <div className='w-[100vw] h-[100vh] bg-[#f2f4f5] flex justify-center items-center shadow-2xl'>  
+     <div className='min-h-screen w-full bg-[#f2f4f5] flex items-start justify-center pt-24 pb-16'>  
+       <div className='relative w-[92%] lg:w-[70%] max-w-5xl bg-white rounded-3xl shadow-2xl p-6 lg:p-10 flex flex-col items-center gap-5'>  
+        <span className='text-xl font-bold'>Edit Profile</span>
  
-       <div 
-       className='relative bg-white lg:w-[50%] h-[50] w-[90%] rounded-2xl flex justify-center items-center flex-col gap-5 p-3' >  
-
-        <span className='text-xl font-bold' >Edit Profile</span>
- 
-       <span 
-       onClick={()=>navigate("/profile")}
-        className='active:bg-black active:text-white  p-1 rounded-full  absolute top-4 left-3 text-4xl' >
+       <button 
+       onClick={()=>navigate('/profile')}
+        className='absolute top-4 left-4 text-3xl lg:text-4xl p-1 rounded-full hover:bg-black hover:text-white transition-colors' aria-label='Back'>
             <IoArrowBack/>
-       </span>
+       </button>
  
       
-          {showPhoto? <img 
-                       src={showPhoto} 
-                       alt="Profile" 
-                       className="w-20 h-20 p-3 rounded-full object-cover"
-                     /> :   
-          <span  
-          className='text-2xl  py-3 px-6 bg-black text-white rounded-full'
-          > {userData?.name.split("")[0].toUpperCase()}  </span>
- }
+          {showPhoto? (
+            <img src={showPhoto} alt='Profile' className='w-20 h-20 rounded-full object-cover border border-gray-200' />
+          ) :  (
+          <span className='text-2xl py-3 px-6 bg-black text-white rounded-full'>
+            {userData?.name?.[0]?.toUpperCase()}
+          </span>
+         )}
  
-            {/* <span>{userData.role}</span> */}
-      
- 
-       <div className='flex w-[100%] p-3 flex-col gap-2 justify-center items-center'>   
-          
-           
-               <div className='w-[90%] flex flex-col justify-center items-start gap-2'>  
-                 <label htmlFor="photoUrl">Select Avtar</label>
+       <div className='flex w-full p-3 flex-col gap-4 items-center'>   
+               <div className='w-full lg:w-[90%] flex flex-col gap-2'>  
+                 <label htmlFor="photoUrl">Select Avatar</label>
                   <input 
                   type="file"
                   id='photoUrl'
@@ -179,74 +169,64 @@ const EditProfile = () => {
                      setPhotoUrl(e.target.files[0])
                      setShowPhoto(URL.createObjectURL(e.target.files[0]))
                   }}
-               className='w-[90%] cursor-pointer p-2 text-[16px] bg-gray-300 rounded-xl border border-gray-300'  />
-
+               className='cursor-pointer p-2 text-[16px] bg-gray-300 rounded-xl border border-gray-300'  />
                </div>
           
-            
-               <div className='w-[90%] flex flex-col justify-center items-start gap-1'>  
-
+               <div className='w-full lg:w-[90%] flex flex-col gap-1'>  
                  <label htmlFor="name">Name</label>
                   <input 
                   value={name}
                   onChange={(e)=>setName(e.target.value)}
                   id='name'
-              name='name'  
-               className='w-[90%] p-2 text-[19px] rounded-2xl border border-gray-300'  type=" " />
-
+                  name='name'  
+                  className='p-2 text-[19px] rounded-2xl border border-gray-300'  type='text' />
                </div>
 
-             
-               <div className='w-[90%] flex flex-col justify-center items-start gap-1'>  
+               <div className='w-full lg:w-[90%] flex flex-col gap-1'>  
                  <label htmlFor="phone">Phone</label>
                   <input  
                   onChange={(e)=>setPhone(e.target.value)}
                   id='phone'
-              name='phone'  
-              value={phone}
-               className='w-[90%] p-2 text-[19px]  rounded-2xl border border-gray-300'  type="number" />
-
+                  name='phone'  
+                  value={phone}
+                  className='p-2 text-[19px] rounded-2xl border border-gray-300'  type='tel' />
                </div>
 
-
-               <div className='w-[90%] flex flex-col justify-center items-start gap-1'>  
+               <div className='w-full lg:w-[90%] flex flex-col gap-1'>  
                  <label htmlFor="email">Email</label>
                   <input  
                   readOnly
-                  id='name'
-              name='name'  
-              value={userData?.email}
-               className='w-[90%] p-2 text-[19px] bg-gray-200 rounded-2xl border border-gray-300'  type=" " />
-
+                  id='email'
+                  name='email'  
+                  value={userData?.email}
+                  className='p-2 text-[19px] bg-gray-200 rounded-2xl border border-gray-300'  type='email' />
                </div>
 
-                 <div className='w-[90%] flex flex-col justify-center items-start gap-1'>  
+               <div className='w-full lg:w-[90%] flex flex-col gap-1'>  
                  <label htmlFor="bio">Bio</label>
                   <textarea
-                 onChange={(e)=>setDiscription(e.target.value)}
-                   rows={3}
-                  id='bio'
-              name='bio'  
-              value={discription}
-               className='w-[90%] p-2 text-[19px] rounded-2xl border resize-none border-gray-300'  type=" " />
-
+                    onChange={(e)=>setDiscription(e.target.value)}
+                    rows={3}
+                    id='bio'
+                    name='bio'  
+                    value={discription}
+                    className='p-2 text-[19px] rounded-2xl border resize-none border-gray-300'
+                  />
                </div>
-
-              
        </div> 
  
        <button  
            disabled={loading}
            onClick={requestToUpload}
-        className='cursor-pointer bg-black px-4 py-3 text-sm lg:text-2xl active:bg-gray-800 lg:active:text-xl transition-all duration-75 text-white rounded-xl'>
-       {loading ?<div className="flex justify-center items-center w-[120px]">
-      <PropagateLoader size={22} color="#ffffff" />
-    </div> : "Save Changes"}
+           className='mt-2 bg-black text-white px-6 py-3 text-base lg:text-2xl rounded-xl hover:bg-gray-800 transition-colors'>
+       {loading ? (
+         <div className='flex justify-center items-center w-[120px]'>
+           <PropagateLoader size={22} color='#ffffff' />
+         </div>
+       ) : 'Save Changes'}
        </button>
        
        </div>
- 
-        
      </div>
    )
 }
