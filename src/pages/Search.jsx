@@ -3,14 +3,17 @@ import { FaMicrophone, FaSearch, FaArrowLeft } from "react-icons/fa";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import { useNavigate } from "react-router-dom";
 import {toast} from "react-toastify" ;
-
+import { baseUrl } from "../App.jsx";
+import axios from "axios";
+import Card from "../component/card.jsx";
 
 
 const Search = () => {
   const navigate = useNavigate() ;
   const [text, setText] = useState("") ;
   const [isListening, setIsListening] = useState(false) ;
-  const [recomendation , setReconmentdation]  = useState("") ;
+  const [results , setResults]  = useState([]) ;
+  const [loading , setLoading] = useState(false) ;
   
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; 
@@ -37,10 +40,29 @@ const Search = () => {
   }
 
 
-  const handleRecomandation = async()=>{  
-     
-     tr
-    
+  const handleRecomandation = async(e)=>{ 
+     e.preventDefault() ;
+     if(!text.trim()) return ; 
+     setLoading(true) ;
+     setResults([]) ;          
+     try {   
+        const res = await axios.post(
+          `${baseUrl}/api/course/search-with-ai`,
+          {},
+          { params: { query: text.trim() }, withCredentials: true }
+        );
+
+        console.log("search with ai response " , res?.data) ;
+        const list = res?.data.courseData
+
+        setResults(list) ;        
+      
+     } catch (error) {
+      console.log("search with ai error ❌❌❌" , error.message) ;
+      toast.error(error.message) ;
+     } finally {
+      setLoading(false) ;
+     }
   }  
 
 
@@ -70,7 +92,9 @@ const Search = () => {
           </div>
 
           {/* Input Section */}
-          <form className="mt-4">
+          <form 
+          onSubmit={handleRecomandation}
+           className="mt-4">
             <div className="bg-[#2f3a48] text-white rounded-full flex items-center px-4 py-2 gap-2 shadow-inner">
               <input
                 value={text}
@@ -99,6 +123,29 @@ const Search = () => {
               </button>
             </div>
           </form>
+        </div>
+
+        {/* Results */}
+        <div className="mt-6">
+          {loading ? (
+            <div className="flex justify-center py-10"><ScaleLoader color="#d48fff" /></div>
+          ) : results && results.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {results.map((el) => (
+                <Card
+                  key={el._id}
+                  id={el._id}
+                  title={el.title}
+                  price={el.price}
+                  mrp={el.mrp}
+                  category={el.category}
+                  images={el.thumbnails?.images}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-sm text-gray-400">Search results will appear here</div>
+          )}
         </div>
       </div>
     </div>
