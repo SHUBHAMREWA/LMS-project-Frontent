@@ -6,15 +6,25 @@ import {toast} from "react-toastify" ;
 import { baseUrl } from "../App.jsx";
 import axios from "axios";
 import Card from "../component/card.jsx";
+import start from "../assets/start.mp3" ;
 
-
-const Search = () => {
+const Search = () => {  
+    
+   
+  const startAudio = new Audio(start) ;
+   
   const navigate = useNavigate() ;
   const [text, setText] = useState("") ;
   const [isListening, setIsListening] = useState(false) ;
   const [results , setResults]  = useState([]) ;
   const [loading , setLoading] = useState(false) ;
   
+
+  function speek(message){ 
+
+     let uttrence  =  new SpeechSynthesisUtterance(message) ; 
+       window.speechSynthesis.speak(uttrence) ;
+  }
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; 
    
@@ -29,7 +39,7 @@ const Search = () => {
     if(!recognition) return  ;
     recognition.start() ;
     setIsListening(true) ;
-
+       startAudio.play() ;
     recognition.onresult = async (e)=>{ 
       console.log(e)
         let results =   e.results[0][0].transcript.trim() 
@@ -54,12 +64,22 @@ const Search = () => {
 
         console.log("search with ai response " , res?.data) ;
         const list = res?.data.courseData
+    
+         if(list.length === 0){
+          toast.info("no courses found for this query") ;
+          speek("sorry , no courses found for this query") ;
+          setResults([]) ;
+          return ;
+         }
 
+        speek("this are the Search results I found for you") ;
         setResults(list) ;        
       
-     } catch (error) {
+     } catch (error) {  
       console.log("search with ai error ❌❌❌" , error.message) ;
       toast.error(error.message) ;
+        speek("failded to fetch search results")
+
      } finally {
       setLoading(false) ;
      }
