@@ -31,6 +31,8 @@ const Editcourse = () => {
     "Data Analytics",
     "Data Science",
     "Ai Tools",
+    "Programming Languages",
+    "Cloud Computing",
   ]
 
   const { uploadImages } = useCloudinaryUpload()

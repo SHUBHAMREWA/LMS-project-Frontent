@@ -34,6 +34,8 @@ const Createcourse = () => {
     "Data Analytics",
     "Data Science",
     "Ai Tools",
+    "Programming Languages",
+    "Cloud Computing",
   ]
 
   console.log(images.length != 0 ? typeof images[0].url : "land")
