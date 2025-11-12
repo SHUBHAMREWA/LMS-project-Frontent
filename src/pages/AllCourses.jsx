@@ -14,6 +14,8 @@ import { PiDeviceMobileFill } from "react-icons/pi"
 import { SiDatastax } from "react-icons/si"
 import { TbBrandGoogleAnalytics } from "react-icons/tb"
 import { GiArtificialHive } from "react-icons/gi"
+import { GiLaptop } from "react-icons/gi";
+import { SiAmazoncloudwatch } from "react-icons/si";
 import Card from '../component/card.jsx'
 
 
@@ -39,6 +41,8 @@ const AllCourses = () => {
     { name: "Data Science", icon: <SiDatastax />, color: "bg-amber-400" },
     { name: "Data Analytics", icon: <TbBrandGoogleAnalytics />, color: "bg-red-600" },
     { name: "Ai Tools", icon: <GiArtificialHive />, color: "bg-fuchsia-700" },
+    { name: "Programming Languages", icon: <GiLaptop />, color: "bg-fuchsia-500" },
+    { name: "Cloud Computing", icon: <SiAmazoncloudwatch />, color: "bg-fuchsia-700" },
   ]
 
   // Handle category selection
